@@ -2,6 +2,10 @@ class User < ActiveRecord::Base
   rolify
   has_many :authentications
   has_many :posts
+  has_many :friendships
+  has_many :friends, :through => :friendships
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :inverse_friends, :through => :inverse_friendships, :source => :user
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -26,4 +30,8 @@ class User < ActiveRecord::Base
       super
     end
   end
+  def user_picture(omniauth)
+    self.picture   = omniauth['info']['image'] 
+  end
+  
 end

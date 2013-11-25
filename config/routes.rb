@@ -1,5 +1,7 @@
 Wefeed::Application.routes.draw do
 
+  resources :friendships
+
   resources :posts
   resources :activities
 

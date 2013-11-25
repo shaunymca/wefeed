@@ -1,18 +1,4 @@
-<nav class="tab-bar">
-  <section class="left-small" style = 'margin-top: 0px; '>
-    <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
-  </section>
-  <section class="middle tab-bar-section" style = 'margin-top: 0px; '>
-    <a href="/"><h1 class="title">WeFeed</h1></a>
-  </section>
-  <section class="right-small" style = 'margin-top: 0px; '>
-    <a class="right-off-canvas-toggle menu-icon" ><span></span></a>
-  </section>
-</nav>
-
- <%= render 'layouts/left_menu' %>
-
-<aside class="right-off-canvas-menu">
+<aside class="left-off-canvas-menu">
   <ul class="off-canvas-list">
     <% if user_signed_in? %>
     <li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
@@ -31,4 +17,3 @@
     <% end %>
   </ul>
 </aside>
-

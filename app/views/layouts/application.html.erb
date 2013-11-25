@@ -1,45 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Wefeed" %></title>
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Wefeed" %>">
-    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-    <%# Modernizr is required for Zurb Foundation 4 %>
-<%= javascript_include_tag "vendor/custom.modernizr" %>
-    <%= javascript_include_tag :application, "data-turbolinks-track" => true %>
-    <%= javascript_include_tag :defaults %>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title><%= content_for?(:title) ? yield(:title) : "WeFeed" %></title>
+    
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
     <%= csrf_meta_tags %>
   </head>
   <body>
     <div class="off-canvas-wrap">
-      <header>
+      <div class="inner-wrap">
         <%= render 'layouts/navigation' %>
-      </header>
-      <main role="main">
-        <%= render 'layouts/messages' %>
-        <div class="row">
-          <div class="small-12 columns">
-            <div class="panel">
-              <h1>WeFeed</h1>
+        <main role="main">
+          <section class="main-section">
+            <!-- End Header and Nav -->
+            <div class="row">
+              <!-- Nav Sidebar -->
+              <!-- This is source ordered to be pulled to the left on larger screens -->
+              
+              <%= yield %>
+              <%= javascript_include_tag "application" %>
+              
+              <!-- On small devices this column is hidden -->
+              <aside class="large-3 columns hide-for-small">
+                <p><img src="http://placehold.it/300x440&text=[ad]" /></p>
+                <p><img src="http://placehold.it/300x440&text=[ad]" /></p>
+              </aside>
             </div>
-          </div>
-        </div>
-        <!-- End Header and Nav -->
-        <div class="row">
-          <!-- Nav Sidebar -->
-          <!-- This is source ordered to be pulled to the left on larger screens -->
-          
-          <%= yield %>
-          <!-- Right Sidebar -->
-          <!-- On small devices this column is hidden -->
-          <aside class="large-3 columns hide-for-small">
-            <p><img src="http://placehold.it/300x440&text=[ad]" /></p>
-            <p><img src="http://placehold.it/300x440&text=[ad]" /></p>
-          </aside>
-          
-        </div>
-      </main>
+          </section>
+        </main>
+        <a class="exit-off-canvas"></a>
+      </div>
     </div>
   </body>
 </html>

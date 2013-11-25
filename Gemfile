@@ -23,6 +23,7 @@ gem 'twitter'
 gem 'fb_graph'
 gem 'nifty-generators'
 gem 'public_activity'
+gem 'jquery-turbolinks'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]

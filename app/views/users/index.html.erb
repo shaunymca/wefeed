@@ -1,11 +1,10 @@
 <h3>Users</h3>
 <ul class="users">
-  <% @users.each do |user| %>
+  <% @nonfriends.each do |user| %>
     <div class="user">
     <p>
-      <strong><%=h user.name %></strong>
-      <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
-      <div class="clear"></div>
+      <strong><%= user.name %></strong>
+      <%= link_to "Add Friend", friendships_path(:friend_id => user),:class => "button", :method => :post, remote: true %>
     </p>
   </div>
   <% end %>

@@ -6,18 +6,40 @@
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Wefeed" %>">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
     <%# Modernizr is required for Zurb Foundation 4 %>
-    <%= javascript_include_tag "vendor/custom.modernizr" %>
+<%= javascript_include_tag "vendor/custom.modernizr" %>
     <%= javascript_include_tag :application, "data-turbolinks-track" => true %>
     <%= javascript_include_tag :defaults %>
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'layouts/navigation' %>
-    </header>
-    <main role="main">
-       <%= render 'layouts/messages' %>
-       <%= yield %>
-    </main>
+    <div class="off-canvas-wrap">
+      <header>
+        <%= render 'layouts/navigation' %>
+      </header>
+      <main role="main">
+        <%= render 'layouts/messages' %>
+        <div class="row">
+          <div class="small-12 columns">
+            <div class="panel">
+              <h1>WeFeed</h1>
+            </div>
+          </div>
+        </div>
+        <!-- End Header and Nav -->
+        <div class="row">
+          <!-- Nav Sidebar -->
+          <!-- This is source ordered to be pulled to the left on larger screens -->
+          
+          <%= yield %>
+          <!-- Right Sidebar -->
+          <!-- On small devices this column is hidden -->
+          <aside class="large-3 columns hide-for-small">
+            <p><img src="http://placehold.it/300x440&text=[ad]" /></p>
+            <p><img src="http://placehold.it/300x440&text=[ad]" /></p>
+          </aside>
+          
+        </div>
+      </main>
+    </div>
   </body>
 </html>

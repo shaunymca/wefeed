@@ -1,6 +1,7 @@
 Wefeed::Application.routes.draw do
 
   resources :posts
+  resources :activities
 
   #match '/auth/:provider/callback' => 'authentications#create'
   resources :authentications

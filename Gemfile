@@ -16,12 +16,13 @@ gem 'rolify'
 gem 'simple_form'
 gem 'therubyracer', :platform=>:ruby
 gem 'thin'
-gem 'zurb-foundation'
+gem 'foundation-rails'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'twitter'
 gem 'fb_graph'
 gem 'nifty-generators'
+gem 'public_activity'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]

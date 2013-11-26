@@ -39,7 +39,7 @@ group :test do
   gem 'email_spec'
 end
 group :production do
-  gem 'postgres'
+  gem 'pg'
   gem 'rails_12factor'
 end
 gem "mocha", group: :test

@@ -10,11 +10,17 @@
         </div>
       </div>
       <div class="row">
-        <% if @user != current_user%>
         <div class="small-5 small-offset-4 columns">
-          <%= link_to "Add Friend", friendships_path(:friend_id => @user),:class => "button right", :method => :post, remote: true %>
+          <% if current_user.friends.include?(@user) %>
+          <% @friendship.each do |friendship| %>
+          <%= link_to "Unfollow", friendship, :class => "button right alert", :method => :delete %>
+          <% end %>
+          <% elsif @user != current_user %>
+          <%= link_to "Follow", friendships_path(:friend_id => @user),:class => "button right", :method => :post, remote: true %>
+          
+          <% else %>
+          <% end %>
         </div>
-        <% end %>
         
       </div>
     </div>

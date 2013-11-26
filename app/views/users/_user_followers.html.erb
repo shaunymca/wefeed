@@ -7,9 +7,9 @@
   </div>
   <h5><%= link_to friendship.friend.name, friendship.friend %></h5>
   <% if current_user.friendships.include?(friendship) %>
-  <%= link_to "remove", friendship, :class => "button", :method => :delete %>
+  <%= link_to "Unfollow", friendship, :class => "button alert tiny", :method => :delete %>
   <% elsif friendship.friend != current_user %>
-  <%= link_to "Add Friend", friendships_path(:friend_id => friendship),:class => "button", :method => :post, remote: true %>
+  <%= link_to "Follow", friendships_path(:friend_id => friendship),:class => "button tiny", :method => :post, remote: true %>
   <% end %>
   
   <% end %>
@@ -24,9 +24,9 @@
   </div>
   <%= link_to ifriendship.user.name, ifriendship.user %>
   <% if current_user.friends.include?(ifriendship) %>
-  <%= link_to "remove", ifriendship, :class => "button", :method => :delete %>
+  <%= link_to "Unfollow", ifriendship, :class => "button alert tiny", :method => :delete %>
   <% elsif ifriendship.user != current_user %>
-  <%= link_to "Add Friend", friendships_path(:friend_id => ifriendship),:class => "button", :method => :post, remote: true %>
+  <%= link_to "Follow", friendships_path(:friend_id => ifriendship),:class => "button tiny", :method => :post, remote: true %>
   <% else %>
   <% end %>
   <% end %>

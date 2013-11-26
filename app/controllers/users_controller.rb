@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @followers = @user.inverse_friendships.all
     @followed = @user.friendships.all
+    @friendship = current_user.friends.where(id: @user.id)
     respond_to do |format|
       format.html
       format.js

@@ -1,6 +1,6 @@
 <div class="medium-6 columns">
   <h2>Following</h2>
-  
+  <div id="followed">
   <% @followed.each do |friendship| %>
   <div class="medium-4 columns">
   <%= link_to image_tag("#{friendship.friend.photo_location}"), friendship.friend, :class => "th" %>
@@ -9,23 +9,22 @@
   <%= link_to "Unfollow", friendship, :class => "button alert tiny", :method => :delete, :remote => true %>
   
   <% end %>
-  
+  </div>
 </div>
 
 <div class="medium-6 columns">
   <h2>Followers</h2>
-  
+  <div id="followers">
   <% @followers.each do |ifriendship| %>
   <div class="medium-4 columns">
   <%= link_to image_tag("#{ifriendship.user.photo_location}"), ifriendship.user %>
   </div>
   <h5><%= link_to ifriendship.user.name, ifriendship.user %></h5>
   <% if @user.friends.include?(ifriendship.user) %>
-  <%= link_to "Unfollow", ifriendship, :class => "button alert tiny", :method => :delete, :remote => true %>
   <% else %>
   <%= link_to "Follow", friendships_path(:friend_id => ifriendship.user.id),:class => "button tiny", :method => :post, remote: true %>
   <% end %>
   
   <% end %>
-  
+  </div>
 </div>

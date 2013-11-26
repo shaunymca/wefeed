@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable
   
+  before_create :fake_photo
+  
   def apply_omniauth(omni)
     authentications.build(:provider => omni['provider'], 
                           :uid => omni['uid'], 
@@ -31,7 +33,14 @@ class User < ActiveRecord::Base
     end
   end
   def user_picture(omniauth)
-    self.picture   = omniauth['info']['image'] 
+    self.picture = omniauth['info']['image'] 
+  end
+  
+  def fake_photo
+    if self.photo_location.nil?
+      number = ([*475..525]).sample
+      self.photo_location = "http://www.placecage.com/500/#{number}"
+    end
   end
   
 end

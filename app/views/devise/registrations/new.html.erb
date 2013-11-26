@@ -2,10 +2,8 @@
 
 <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <%= f.error_notification %>
-<%= session[:omniauth].photo_location %>
-<%= session[:omniauth].name %>
   <div class="form-inputs">
-    <% if session[:omniauth].provider == 'twitter' %>
+    <% if session[:omniauth] && session[:omniauth].provider == 'twitter' %>
     <%= f.hidden_field :photo_location, :value => session[:omniauth].photo_location.sub("_normal", "").to_s %>
     <%= f.hidden_field :name, :value => session[:omniauth].name %>
     <% end %>

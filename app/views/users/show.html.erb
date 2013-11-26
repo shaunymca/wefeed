@@ -1,3 +1,31 @@
-<h3>User</h3>
-<p>User: <%= @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
+<div class="row">
+  <div class="medium-12 columns">
+    <div class="row panel large-5 small-5 columns small-centered large-centered">
+      <div class="row">
+        <div class="medium-5 columns">
+          <%=image_tag("#{@user.photo_location}")%>
+        </div>
+        <div class="medium-6 columns">
+          <h1><%= @user.name %></h1>
+        </div>
+      </div>
+      <div class="row">
+        <% if @user != current_user%>
+        <div class="small-5 small-offset-4 columns">
+          <%= link_to "Add Friend", friendships_path(:friend_id => @user),:class => "button right", :method => :post, remote: true %>
+        </div>
+        <% end %>
+        
+      </div>
+    </div>
+    <div class = "row">
+      <div class="medium-12 columns">
+        <% if @user == current_user %>
+        <%= render "my_followers" %>
+        <% else %>
+        <%= render "user_followers" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="medium-6 columns">
+  <h2>Following</h2>
+  
+  <% @followed.each do |friendship| %>
+  <div class="medium-4 columns">
+    <%= link_to image_tag("#{friendship.friend.photo_location}"), friendship.friend, :class => "th" %>
+  </div>
+  <h5><%= link_to friendship.friend.name, friendship.friend %></h5>
+  <% if current_user.friendships.include?(friendship) %>
+  <%= link_to "remove", friendship, :class => "button", :method => :delete %>
+  <% elsif friendship.friend != current_user %>
+  <%= link_to "Add Friend", friendships_path(:friend_id => friendship),:class => "button", :method => :post, remote: true %>
+  <% end %>
+  
+  <% end %>
+</div>
+
+<div class="medium-6 columns">
+  <h2>Followers</h2>
+  
+  <% @followers.each do |ifriendship| %>
+  <div class="medium-4 columns">
+    <%= link_to image_tag("#{ifriendship.user.photo_location}"), ifriendship.user %>
+  </div>
+  <%= link_to ifriendship.user.name, ifriendship.user %>
+  <% if current_user.friends.include?(ifriendship) %>
+  <%= link_to "remove", ifriendship, :class => "button", :method => :delete %>
+  <% elsif ifriendship.user != current_user %>
+  <%= link_to "Add Friend", friendships_path(:friend_id => ifriendship),:class => "button", :method => :post, remote: true %>
+  <% else %>
+  <% end %>
+  <% end %>
+</div>

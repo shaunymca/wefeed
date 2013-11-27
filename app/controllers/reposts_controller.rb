@@ -10,6 +10,7 @@ class RepostsController < ApplicationController
   # GET /reposts/1
   # GET /reposts/1.json
   def show
+    @repost = Repost.find(params[:id])
   end
 
   # GET /reposts/new

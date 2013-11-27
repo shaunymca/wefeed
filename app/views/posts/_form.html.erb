@@ -2,9 +2,8 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :user_id %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
     <%= f.input :url %>
-    <%= f.input :summary %>
   </div>
 
   <div class="form-actions">

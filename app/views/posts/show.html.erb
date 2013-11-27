@@ -13,7 +13,7 @@
   
   <p>
     <strong>Summary:</strong>
-    <%= @post.summary %>
+    <%= simple_format(@post.summary) %>
   </p>
   
   <%= link_to 'Edit', edit_post_path(@post) %> |

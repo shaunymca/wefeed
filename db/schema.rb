@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131126224016) do
+ActiveRecord::Schema.define(version: 20131127030559) do
 
   create_table "activities", force: true do |t|
     t.integer  "trackable_id"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20131126224016) do
     t.text     "summary"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
   end
 
   create_table "reposts", force: true do |t|

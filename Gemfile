@@ -23,6 +23,7 @@ gem 'fb_graph'
 gem 'nifty-generators'
 gem 'public_activity'
 gem 'jquery-turbolinks'
+gem 'unirest'
 group :development do
   gem 'sqlite3'
   gem 'better_errors'

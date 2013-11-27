@@ -1,5 +1,5 @@
 <h1>Listing posts</h1>
-
+<%= link_to 'New Post', new_post_path, class: "button tiny round", id: "new_link", remote: true %>
 <% @posts.each do |post| %>
 <div class= "panel small-12 columns">
   <div class="row">
@@ -27,7 +27,7 @@
         <div class = "small-12 columns">
           <div class = "row">
             <div class = "small-4 columns">
-              <h5><%= post.user.name %></h5>
+              <h5><%= link_to post.user.name, post.user %></h5>
             </div>
             <div class="medium-6 columns">
               <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button small">Summary</a>
@@ -58,4 +58,4 @@
 
 
 
-<%= link_to 'New Post', new_post_path %>
+

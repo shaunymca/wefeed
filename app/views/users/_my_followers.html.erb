@@ -23,9 +23,10 @@
       <div class="medium-5 columns">
         <%= link_to image_tag("#{ifriendship.user.photo_location}"), ifriendship.user, :class => "th" %>
       </div>
-      <div class="mediumn-7 columns">
+      <div class="medium-7 columns">
         <h5><%= link_to ifriendship.user.name, ifriendship.user %></h5>
         <% if @user.friends.include?(ifriendship.user) %>
+
         <% else %>
         <%= link_to "Follow", friendships_path(:friend_id => ifriendship.user.id),:class => "button tiny", :method => :post, remote: true %>
         <% end %>

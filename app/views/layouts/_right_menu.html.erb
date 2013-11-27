@@ -1,6 +1,8 @@
-<aside class="left-off-canvas-menu">
+<aside class="right-off-canvas-menu">
   <ul class="off-canvas-list">
     <% if user_signed_in? %>
+    <li><label><%=link_to current_user.name, current_user%></label></li>
+    <li><%= link_to image_tag("#{current_user.photo_location}"), current_user %></li>
     <li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
     <% else %>
     <li><%= link_to 'Login', new_user_session_path %></li>

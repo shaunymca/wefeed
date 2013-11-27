@@ -9,7 +9,7 @@
           <%= link_to image_tag("#{post.user.photo_location}"), post.user %>
         </div>
         <div class = "small-7 columns">
-          <h7><%= link_to post.title, post.url, :target => "_blank" %></h7>
+          <h7><%= link_to post.title.html_safe, post.url, :target => "_blank" %></h7>
         </div>
         <div class = "small-1 columns">
           RP
@@ -31,6 +31,9 @@
             </div>
             <div class="medium-6 columns">
               <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button small">Summary</a>
+              <% if current_user.has_role? :admin %>
+                <%= link_to "Destroy", post, :confirm => 'Are you sure?', :method => :delete %>
+              <% end %>
             </div>
             <div class="small-2 columns">
               photo,photo
@@ -41,8 +44,8 @@
     </div>
   </div>
   <div id="<%=dom_id(post)%>" class="reveal-modal" data-reveal>
-    <h2><%= post.title %></h2>
-    <%= simple_format(post.summary) %>
+    <h2><%= post.title.html_safe %></h2>
+    <%= simple_format(post.summary.html_safe) %>
     <a class="close-reveal-modal">&#215;</a>
   </div>
 </div>

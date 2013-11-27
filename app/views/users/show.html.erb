@@ -6,21 +6,21 @@
           <%=image_tag("#{@user.photo_location}")%>
         </div>
         <div class="medium-6 columns">
-          <h1><%= @user.name %></h1>
+          <div class="row">
+            <h1><%= @user.name %></h1>
+          </div>
+
+          <div class="row">
+              <% if user_signed_in? && current_user.friends.include?(@user) %>
+              <% current_user.friendships.where(friend_id: @user.id).each do |friendship| %>
+              <%= link_to "Unfollow", friendship, :class => "button large alert", :method => :delete, remote: true, :id => "user_unfollow_button" %>
+              <% end %>
+              <% elsif user_signed_in? && @user != current_user %>
+              <%= link_to "Follow", friendships_path(:friend_id => @user),:class => "button large", :method => :post, remote: true, :id => "user_follow_button#{@user.id}" %>
+              <% else %>
+              <% end %>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="small-5 small-offset-4 columns">
-          <% if user_signed_in? && current_user.friends.include?(@user) %>
-          <% current_user.friendships.where(friend_id: @user.id).each do |friendship| %>
-          <%= link_to "Unfollow", friendship, :class => "button right alert", :method => :delete, remote: true, :id => "user_unfollow_button" %>
-          <% end %>
-          <% elsif user_signed_in? && @user != current_user %>
-          <%= link_to "Follow", friendships_path(:friend_id => @user),:class => "button right", :method => :post, remote: true, :id => "user_follow_button#{@user.id}" %>
-          <% else %>
-          <% end %>
-        </div>
-        
       </div>
     </div>
     <div class = "row">

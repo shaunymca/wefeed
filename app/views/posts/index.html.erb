@@ -45,7 +45,11 @@
   </div>
   <div id="<%=dom_id(post)%>" class="reveal-modal" data-reveal>
     <h2><%= post.title.html_safe %></h2>
-    <%= simple_format(post.summary.html_safe) %>
+    <ul>
+    <% post.summary.split("[BREAK]").each do |sentence| %>
+    <%= simple_format(sentence.html_safe) %>
+    <% end %>
+    </ul>
     <a class="close-reveal-modal">&#215;</a>
   </div>
 </div>

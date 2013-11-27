@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
   
   def generate_summary
     key = ENV["SUMMLY"]
-    api = "http://api.smmry.com/&SM_API_KEY=#{key}&SM_LENGTH=5&SM_URL="
+    api = "http://api.smmry.com/&SM_API_KEY=#{key}&SM_WITH_BREAK&SM_LENGTH=7&SM_URL="
     full_url = api + self.url.to_s
     response = Unirest::get full_url
     text = JSON.parse response.raw_body.to_s

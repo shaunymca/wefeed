@@ -4,7 +4,9 @@ class Post < ActiveRecord::Base
   belongs_to :user
   has_many :reposts
   has_many :resposters, :through => :resposts, :source => :user
-  before_create :generate_summary
+  before_validation :generate_summary
+  before_validation :check_title
+  validates_presence_of :summary
   
   def generate_summary
     key = ENV["SUMMLY"]
@@ -22,6 +24,12 @@ class Post < ActiveRecord::Base
     friend_reposts_ids = user.friend_reposts.map(&:post_id)
     where(['user_id IN (:followed_user_ids) OR user_id = :user_id OR id IN (:repost_ids) OR id IN (:friend_reposts_ids)',
       {followed_user_ids: followed_user_ids, user_id: user, repost_ids: repost_ids, friend_reposts_ids: friend_reposts_ids}])
+  end
+  
+  def check_title
+    if self.title.blank?
+      self.title = "Non-titled url"
+    end
   end
   
 end

@@ -3,8 +3,7 @@ class Post < ActiveRecord::Base
   tracked owner: Proc.new{ |controller, model| controller.current_user }
   belongs_to :user
   has_many :reposts
-  has_many :resposters, :through => :resposts
-  default_scope -> { order('created_at DESC') }
+  has_many :resposters, :through => :resposts, :source => :user
   before_create :generate_summary
   
   def generate_summary
@@ -16,4 +15,13 @@ class Post < ActiveRecord::Base
     self.summary = text["sm_api_content"]
     self.title = text["sm_api_title"].to_s
   end
+  
+  def self.from_users_followed_by(user)
+    followed_user_ids = user.friend_ids
+    repost_ids = user.reposts.map(&:post_id)
+    friend_reposts_ids = user.friend_reposts.map(&:post_id)
+    where(['user_id IN (:followed_user_ids) OR user_id = :user_id OR id IN (:repost_ids) OR id IN (:friend_reposts_ids)',
+      {followed_user_ids: followed_user_ids, user_id: user, repost_ids: repost_ids, friend_reposts_ids: friend_reposts_ids}])
+  end
+  
 end

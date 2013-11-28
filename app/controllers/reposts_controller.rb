@@ -25,11 +25,10 @@ class RepostsController < ApplicationController
   # POST /reposts
   # POST /reposts.json
   def create
-    @repost = Repost.new(repost_params)
-
+    @repost = current_user.reposts.build(:post_id => params[:reposted_post_id])
     respond_to do |format|
       if @repost.save
-        format.html { redirect_to @repost, notice: 'Repost was successfully created.' }
+        format.html { redirect_to posts_path, notice: 'Repost was successfully created.' }
         format.json { render action: 'show', status: :created, location: @repost }
       else
         format.html { render action: 'new' }

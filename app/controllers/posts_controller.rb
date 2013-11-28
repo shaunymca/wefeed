@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.where("user_id in (?) OR user_id = ?", current_user.friend_ids, current_user)
+    @posts = Post.from_users_followed_by(current_user)
   end
   
   # GET /posts/1

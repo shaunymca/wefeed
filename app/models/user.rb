@@ -7,23 +7,25 @@ class User < ActiveRecord::Base
   has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
   has_many :inverse_friends, :through => :inverse_friendships, :source => :user
   has_many :reposts
-  has_many :reposted_posts, :through => :resposts
+  has_many :reposted_posts, :through => :reposts, :source => :post
+  has_many :friend_posts, :through => :friendships, :source => :posts
+  has_many :friend_reposts, :through => :friendships, :source => :reposts
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
-         :recoverable, :rememberable, :trackable, :validatable
+  :recoverable, :rememberable, :trackable, :validatable
   
   before_create :fake_photo
   
   def apply_omniauth(omni)
     authentications.build(:provider => omni['provider'], 
-                          :uid => omni['uid'], 
-                          :token => omni['credentials'].token, 
-                          :token_secret => omni['credentials'].secret)
+      :uid => omni['uid'], 
+      :token => omni['credentials'].token, 
+      :token_secret => omni['credentials'].secret)
   end
-
+  
   def password_required?
     (authentications.empty? || !password.blank?) && super #&& provider.blank?
   end
@@ -45,5 +47,4 @@ class User < ActiveRecord::Base
       self.photo_location = "http://www.placecage.com/500/#{number}"
     end
   end
-  
 end

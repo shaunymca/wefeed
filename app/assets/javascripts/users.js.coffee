@@ -7,6 +7,8 @@ jQuery ->
     console.log(text)
     if text is "Follow"
       $(this).context.innerHTML = "Followed"
+      $(this).fadeOut("slow")
     else if text is "Unfollow"
       $(this).context.innerHTML = "Unfollowed"
+      $(this).fadeOut("slow")
     else

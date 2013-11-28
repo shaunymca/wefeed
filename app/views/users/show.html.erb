@@ -9,11 +9,10 @@
           <div class="row">
             <h1><%= @user.name %></h1>
           </div>
-
           <div class="row">
               <% if user_signed_in? && current_user.friends.include?(@user) %>
               <% current_user.friendships.where(friend_id: @user.id).each do |friendship| %>
-              <%= link_to "Unfollow", friendship, :class => "button large alert", :method => :delete, remote: true, :id => "user_unfollow_button" %>
+              <%= link_to "Unfollow", friendship, :class => "button large alert", :method => :delete, remote: true, :id => "user_follow_button#{@user.id}" %>
               <% end %>
               <% elsif user_signed_in? && @user != current_user %>
               <%= link_to "Follow", friendships_path(:friend_id => @user),:class => "button large", :method => :post, remote: true, :id => "user_follow_button#{@user.id}" %>

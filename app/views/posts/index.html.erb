@@ -14,6 +14,8 @@
         <div class = "small-2 columns">
           <% if current_user.reposted_posts.include?(post) %>
           <span class="secondary label">Reposted</span>
+          <% elsif current_user.posts.include?(post) %>
+          <span></span>
           <% else %>
           <%= link_to "Repost", reposts_path(:reposted_post_id => post),:class => "button tiny round", :method => :post, remote: true, :id => "#{post.id}" %>
           <span style="display: none;" <%= ("id='repost-badge#{post.id}'").html_safe %> class="secondary label">Reposted</span>

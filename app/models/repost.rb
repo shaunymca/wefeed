@@ -1,4 +1,11 @@
 class Repost < ActiveRecord::Base
   belongs_to :user
   belongs_to :post
+  accepts_nested_attributes_for :post
+  after_save :update_post
+  
+  def update_post
+    post.updated_at = self.created_at
+    post.save
+  end
 end

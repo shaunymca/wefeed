@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.from_users_followed_by(current_user)
+    @posts = Post.from_users_followed_by(current_user).order("updated_at desc")
   end
   
   # GET /posts/1

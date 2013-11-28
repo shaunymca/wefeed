@@ -6,20 +6,15 @@ Wefeed::Application.routes.draw do
   resources :home
   resources :posts
   resources :activities
-    
-  authenticated :user do
-    root :to => "posts#index"
-  end
   
-  devise_scope :user do
-    get "/" => "home#index"
-  end
+  root :to => "posts#index"
+  
   #match '/auth/:provider/callback' => 'authentications#create'
   resources :authentications
   
   devise_for :users, path_names: {sign_in: "login", sign_out: "sign_out"}, controllers: {omniauth_callbacks: "authentications", registrations: "registrations"}
   resources :users
-
-
+  
+  
   
 end

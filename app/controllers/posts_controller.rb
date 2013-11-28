@@ -4,7 +4,11 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.from_users_followed_by(current_user).order("updated_at desc")
+    if user_signed_in?
+      @posts = Post.from_users_followed_by(current_user).order("updated_at desc")
+    else
+      @posts = Post.all.order("updated_at desc")
+    end
   end
   
   # GET /posts/1

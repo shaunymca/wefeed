@@ -47,4 +47,10 @@ class User < ActiveRecord::Base
       self.photo_location = "http://www.placecage.com/500/#{number}"
     end
   end
+  
+  def update_role(role)
+    self.role_ids = []
+    self.add_role(role.name)
+  end
+  
 end

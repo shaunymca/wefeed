@@ -10,6 +10,7 @@
         <div class = "small-2 columns large-2 small-3">
           <% unless post.user.nil? %>
           <%= link_to image_tag("#{post.user.photo_location}"), post.user %>
+          <small><%= link_to post.user.name, post.user %></small>
           <% end %>
         </div>
         <div class = "small-9 columns hide-for-large">
@@ -23,9 +24,7 @@
         </div>
       </div>
       <div class="row">
-        <div class = "small-4 columns">
-          <small><%= link_to post.user.name, post.user %></small>
-        </div>
+        
       </div>
       <div class='row'>
         <div class = 'large-5 small-8 small-centered columns'>

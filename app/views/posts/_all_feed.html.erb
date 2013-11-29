@@ -8,6 +8,7 @@
         <div class = "small-2 columns large-2 small-3">
           <% unless post.user.nil? %>
           <%= link_to image_tag("#{post.user.photo_location}"), post.user %>
+          <small><%= link_to post.user.name, post.user %></small>
           <% end %>
         </div>
         <div class = "small-9 columns hide-for-large">
@@ -20,11 +21,7 @@
           
         </div>
       </div>
-      <div class="row">
-        <div class = "small-4 columns">
-          <small><%= link_to post.user.name, post.user %></small>
-        </div>
-      </div>
+      &nbsp;
       <div class='row'>
         <div class = 'large-5 small-8 small-centered columns'>
           <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button tiny">Summary</a>
@@ -35,7 +32,6 @@
           <% if current_user.reposted_posts.include?(post) %>
           <span class="secondary label">Reposted</span>
           <% elsif current_user.posts.include?(post) %>
-          <span></span>
           <% else %>
           <%= link_to "Repost", reposts_path(:reposted_post_id => post),:class => "button tiny round", :method => :post, remote: true, :id => "#{post.id}" %>
           <span style="display: none;" <%= ("id='repost-badge#{post.id}'").html_safe %> class="secondary label">Reposted</span>

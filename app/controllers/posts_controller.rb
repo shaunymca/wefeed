@@ -6,8 +6,9 @@ class PostsController < ApplicationController
   def index
     if user_signed_in?
       @posts = Post.from_users_followed_by(current_user).order("updated_at desc")
+      @all_posts = Post.all.order("updated_at desc")
     else
-      @posts = Post.all.order("updated_at desc")
+      @all_posts = Post.all.order("updated_at desc")
     end
   end
   

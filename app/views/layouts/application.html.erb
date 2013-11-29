@@ -18,11 +18,9 @@
           <section class="main-section">
             <!-- End Header and Nav -->
             <div class="row">
-              <!-- Nav Sidebar -->
-              <!-- This is source ordered to be pulled to the left on larger screens -->
-              <div class="large 9 small-12 columns">
-              <%= yield %>
-              <%= javascript_include_tag "application" %>
+              <div class="small-12 large-9 columns">
+                <%= yield %>
+                <%= javascript_include_tag "application" %>
               </div>
               <!-- On small devices this column is hidden -->
               <aside class="large-3 columns hide-for-small">

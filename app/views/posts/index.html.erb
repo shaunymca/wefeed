@@ -1,78 +1,36 @@
-<h1>Listing posts</h1>
 <% if user_signed_in? %>
-<%= link_to 'New Post', new_post_path, class: "button tiny round", id: "new_link", remote: true %>
-<% else %>
-<%= link_to 'New Post', new_user_registration_path, class: "button tiny round" %>
-<% end %>
-<% @posts.each do |post| %>
-<div class= "panel small-12 columns">
-  <div class="row">
-    <div class= "small-12 columns">
-      <div class="row">
-        <div class = "small-2 columns small-2">
-          <% unless post.user.nil? %>
-          <%= link_to image_tag("#{post.user.photo_location}"), post.user %>
-          <% end %>
-        </div>
-        <div class = "small-6 columns">
-          <h7><%= link_to post.title.html_safe, post.url, :target => "_blank" %></h7>
-        </div>
-        <div class = "small-2 columns">
-          <% if user_signed_in? %>
-            <% if current_user.reposted_posts.include?(post) %>
-            <span class="secondary label">Reposted</span>
-            <% elsif current_user.posts.include?(post) %>
-            <span></span>
-            <% else %>
-            <%= link_to "Repost", reposts_path(:reposted_post_id => post),:class => "button tiny round", :method => :post, remote: true, :id => "#{post.id}" %>
-            <span style="display: none;" <%= ("id='repost-badge#{post.id}'").html_safe %> class="secondary label">Reposted</span>
-            <% end %>
-          <% else %>
-          <%= link_to "Repost", new_user_registration_path, :class => "button tiny round"%>
-          <% end %>
-        </div>
-        <div class = "small-2 columns">
-          <h6>0 comments</h6>
-          <div class="row">
-            <div class="small-12 columns">
-              photo,photo
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class = "small-12 columns">
-          <div class = "row">
-            <div class = "small-4 columns">
-              <h5><%= link_to post.user.name, post.user %></h5>
-            </div>
-            <div class="medium-6 columns">
-              <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button small">Summary</a>
-              <% if user_signed_in? && (current_user.has_role? :admin) %>
-              <%= link_to "Destroy", post, :confirm => 'Are you sure?', :method => :delete %>
-              <% end %>
-            </div>
-            <div class="small-2 columns">
-              photo,photo
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<% if current_user.friends.count > 0 %>
+<dl class="tabs" data-tab>
+  <dd class="active"><a href="#panel2-1">My Feed</a></dd>
+  <dd><a href="#panel2-2">FireHose Feed</a></dd>
+</dl>
+<div class="tabs-content">
+  <div class="content active" id="panel2-1">
+    <%= render 'posts/my_feed' %>
   </div>
-  <div id="<%=dom_id(post)%>" class="reveal-modal" data-reveal>
-    <h2><%= post.title.html_safe %></h2>
-    <ul>
-      <% unless post.summary.nil? %>
-      <% post.summary.split("[BREAK]").each do |sentence| %>
-      <%= simple_format(sentence.html_safe) %>
-      <% end %>
-      <% end %>
-    </ul>
-    <a class="close-reveal-modal">&#215;</a>
+  <div class="content" id="panel2-2">
+    <%= render 'posts/all_feed' %>
   </div>
 </div>
+<% else %>
+<dl class="tabs" data-tab>
+  <dd><a href="#panel2-1">My Feed</a></dd>
+  <dd class="active"><a href="#panel2-2">FireHose Feed</a></dd>
+</dl>
+<div class="tabs-content">
+    <div class="content" id="panel2-1">
+    <%= render 'posts/my_feed' %>
+  </div>
+  <div class="content active" id="panel2-2">
+    <%= render 'posts/all_feed' %>
+  </div>
+</div>
+<% end %>
 
+
+
+<% else %>
+<%= render 'posts/all_feed' %>
 <% end %>
 
 

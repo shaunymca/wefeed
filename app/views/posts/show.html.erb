@@ -10,12 +10,25 @@
     <strong>Url:</strong>
     <%= @post.url %>
   </p>
-  
-  <p>
-    <strong>Summary:</strong>
-    <%= simple_format(@post.summary) %>
-  </p>
-  
+
   <%= link_to 'Edit', edit_post_path(@post) %> |
   <%= link_to 'Back', posts_path %>
 </div>
+
+<% @post.comments.each do |comment| %>
+  <p>
+    <strong>Post:</strong>
+    <%= comment.content.html_safe %>
+  </p>
+<% end %>
+
+<%= form_for([@post, @post.comments.build]) do |f| %>
+  <p>
+    <%= f.label :content %><br />
+    <%= f.text_area :content %>
+    <%= f.hidden_field :post_id, :value => @post.id %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

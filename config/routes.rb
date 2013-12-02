@@ -1,10 +1,11 @@
 Wefeed::Application.routes.draw do
   
   resources :reposts
-  
   resources :friendships
   resources :home
-  resources :posts
+  resources :posts do
+    resources :comments
+  end
   resources :activities
   
   root :to => "posts#index"

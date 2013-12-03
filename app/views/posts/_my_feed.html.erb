@@ -41,6 +41,9 @@
               <%= link_to "Repost", new_user_registration_path, :class => "button tiny round"%>
               <% end %>
             </div>
+            <div class="large-7 columns hide-for-small-only">
+              <small><%= link_to "#{post.comments.count} comments", post %> </small>
+            </div>
           </div>
         </div>
       </div>

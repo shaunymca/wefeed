@@ -1,5 +1,5 @@
 <% @all_posts.each do |post| %>
-<div class= "panel small-12 columns">
+<div class= "custom-panel small-12 columns">
   <div class="row">
     <div class= "small-12 columns">
       <div class="row">
@@ -20,7 +20,7 @@
           </div>
           &nbsp;
           <div class='row'>
-            <div class = 'small-12 small-left columns'>
+            <div class = 'small-12 small-left columns large-8'>
               <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button tiny">Summary</a>
               <% if user_signed_in? && (current_user.has_role? :admin) %>
               <%= link_to "Destroy", post, :confirm => 'Are you sure?', :method => :delete %>
@@ -37,7 +37,7 @@
               <%= link_to "Repost", new_user_registration_path, :class => "button tiny round"%>
               <% end %>
             </div>
-            <div class="large-7 columns hide-for-small-only">
+            <div class="large-4 columns hide-for-small-only">
               <small><%= link_to "#{post.comments.count} comments", post %> </small>
             </div>
           </div>

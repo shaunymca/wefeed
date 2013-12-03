@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :reposted_posts, :through => :reposts, :source => :post
   has_many :friend_posts, :through => :friendships, :source => :posts
   has_many :friend_reposts, :through => :friendships, :source => :reposts
+  has_many :friend_comments, :through => :friendships, :source => :comments
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,

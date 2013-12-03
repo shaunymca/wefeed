@@ -49,3 +49,11 @@ section {
 textarea {
   height: auto;
 }
+
+.custom-panel {
+  @include panel(
+    // Sets the panel padding amount. Default: $panel-padding
+    $padding:5px
+  );
+  margin-bottom: 5px
+}

@@ -60,7 +60,7 @@
 <%= simple_form_for([@post, @post.comments.build]) do |f| %>
 <p>
   <%= "Add a comment, markdown accepted"  %>
-  <%= f.input :content, :rows => 5 %>
+  <%= f.input :content, :input_html => { :rows => '5' } %>
   <%= f.hidden_field :post_id, :value => @post.id %>
 </p>
 <p>

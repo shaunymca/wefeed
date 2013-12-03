@@ -9,4 +9,8 @@ class Comment < ActiveRecord::Base
     self.content = markdown.render(self.content.to_s).to_s
   end
   
+  def user_name
+    self.user.name
+  end
+  
 end

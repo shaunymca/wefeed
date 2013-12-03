@@ -14,9 +14,11 @@ class Post < ActiveRecord::Base
     api = "http://api.smmry.com/&SM_API_KEY=#{key}&SM_WITH_BREAK&SM_LENGTH=7&SM_URL="
     full_url = api + self.url.to_s
     response = Unirest::get full_url
-    text = JSON.parse response.raw_body.to_s
-    self.summary = text["sm_api_content"]
-    self.title = text["sm_api_title"].to_s
+    text = JSON.parse response.body.to_json
+    summary = text["sm_api_content"].gsub "\\", ""
+    title = text["sm_api_title"].gsub "\\", ""
+    self.summary = summary
+    self.title = title
   end
   
   def self.from_users_followed_by(user)

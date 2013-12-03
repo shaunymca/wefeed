@@ -1,0 +1,6 @@
+<p>
+  <% if comment.content %>
+    <%= link_to comment.user.name, comment.user %>
+    <%= raw comment.content %>
+  <% end %>
+</p>

@@ -10,16 +10,16 @@
         </div>
         <div class = "small-8 columns large-10 small-9">
           <div class = "row">
-            <div class = "small-12 columns hide-for-large hide-for-medium">
+            <div class = "small-12 columns hide-for-large-only">
               <medium><%= link_to @post.title.html_safe, @post.url, :target => "_blank" %></medium>
             </div>
-            <div class = "large-12 columns hide-for-small">
+            <div class = "large-12 columns hide-for-medium-down">
               <%= link_to @post.title.html_safe, @post.url, :target => "_blank" %>              
             </div>
           </div>
                 &nbsp;
           <div class='row'>
-            <div class = 'large-5 small-8 small-left columns'>
+            <div class = 'small-12 small-left columns'>
               <a href="#" data-reveal-id="<%=dom_id(@post)%>" class="radius button tiny">Summary</a>
               <% if user_signed_in? && (current_user.has_role? :admin) %>
               <%= link_to "Destroy", @post, :confirm => 'Are you sure?', :method => :delete %>
@@ -55,20 +55,21 @@
   <a class="close-reveal-modal">&#215;</a>
   
 </div>
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
 
-
-
-<%= form_for([@post, @post.comments.build]) do |f| %>
+<% if user_signed_in? %>
+<%= simple_form_for([@post, @post.comments.build]) do |f| %>
 <p>
-  <%= f.label "Comment" %>
-  <%= f.text_area :content %>
+  <%= "Add a comment, markdown accepted"  %>
+  <%= f.input :content, :rows => 5 %>
   <%= f.hidden_field :post_id, :value => @post.id %>
 </p>
 <p>
-  <%= f.submit %>
+  <%= f.button :submit, :class => "button tiny round" %>
 </p>
 <% end %>
+<% else %>
+<%= link_to "Sign-in to comment", new_user_session_path %>
+<% end %>
+
 <h2>Comments</h2>
 <%= render @post.comments %>

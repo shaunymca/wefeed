@@ -1,6 +1,15 @@
-<p>
-  <% if comment.content %>
-    <%= link_to comment.user.name, comment.user %>
-    <%= raw comment.content %>
-  <% end %>
-</p>
+<% if comment.content %>
+<div class="row">
+  <div class="panel radius">
+    <div class="row">
+      <div class = "small-3 columns large-1 medium-1 small-2">
+        <%= link_to image_tag("#{comment.user.photo_location}"), comment.user %>
+        
+      </div>
+      <small><%= link_to comment.user.name, comment.user %></small>
+      <small><%= comment.created_at %></small>
+      <%= raw comment.content %>
+    </div>
+  </div>
+</div>
+<% end %>

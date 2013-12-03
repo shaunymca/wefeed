@@ -1,32 +1,74 @@
-<div class=row >
-  <div class="large-6 columns">
-  <p id="notice"><%= notice %></p>
-  
-  <p>
-    <strong>User:</strong>
-    <%= @post.user_id %>
-  </p>
-  
-  <p>
-    <strong>Url:</strong>
-    <%= @post.url %>
-  </p>
+<div class= "panel small-12 columns">
+  <div class="row">
+    <div class= "small-12 columns">
+      <div class="row">
+        <div class = "small-2 columns large-2 small-3">
+          <% unless @post.user.nil? %>
+          <%= link_to image_tag("#{@post.user.photo_location}"), @post.user %>
+          <small><%= link_to @post.user.name, @post.user %></small>
+          <% end %>
+        </div>
+        <div class = "small-8 columns large-10 small-9">
+          <div class = "row">
+            <div class = "small-12 columns hide-for-large hide-for-medium">
+              <medium><%= link_to @post.title.html_safe, @post.url, :target => "_blank" %></medium>
+            </div>
+            <div class = "large-12 columns hide-for-small">
+              <%= link_to @post.title.html_safe, @post.url, :target => "_blank" %>              
+            </div>
+          </div>
+                &nbsp;
+          <div class='row'>
+            <div class = 'large-5 small-8 small-left columns'>
+              <a href="#" data-reveal-id="<%=dom_id(@post)%>" class="radius button tiny">Summary</a>
+              <% if user_signed_in? && (current_user.has_role? :admin) %>
+              <%= link_to "Destroy", @post, :confirm => 'Are you sure?', :method => :delete %>
+              <% end %>
+              <% if user_signed_in? %>
+              <% if current_user.reposted_posts.include?(@post) %>
+              <span class="secondary label">Reposted</span>
+              <% elsif current_user.posts.include?(@post) %>
+              <% else %>
+              <%= link_to "Repost", reposts_path(:reposted_post_id => @post),:class => "button tiny round", :method => :post, remote: true, :id => "#{@post.id}" %>
+              <span style="display: none;" <%= ("id='repost-badge#{@post.id}'").html_safe %> class="secondary label">Reposted</span>
+              <% end %>
+              <% else %>
+              <%= link_to "Repost", new_user_registration_path, :class => "button tiny round"%>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <%= link_to 'Edit', edit_post_path(@post) %> |
-  <%= link_to 'Back', posts_path %>
+<div id="<%=dom_id(@post)%>" class="reveal-modal expand-modal" data-reveal>
+  <h2><%= @post.title.html_safe %></h2>
+  <ul>
+    <% unless @post.summary.nil? %>
+    <% @post.summary.split("[BREAK]").each do |sentence| %>
+    <%= simple_format(sentence.html_safe) %>
+    <% end %>
+    <% end %>
+  </ul>
+  <a class="close-reveal-modal">&#215;</a>
+  
 </div>
-</div>
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
+
 
 
 <%= form_for([@post, @post.comments.build]) do |f| %>
-  <p>
-    <%= f.label "Comment" %>
-    <%= f.text_area :content %>
-    <%= f.hidden_field :post_id, :value => @post.id %>
-  </p>
-  <p>
-    <%= f.submit %>
-  </p>
+<p>
+  <%= f.label "Comment" %>
+  <%= f.text_area :content %>
+  <%= f.hidden_field :post_id, :value => @post.id %>
+</p>
+<p>
+  <%= f.submit %>
+</p>
 <% end %>
 <h2>Comments</h2>
 <%= render @post.comments %>

@@ -1,5 +1,3 @@
-
-
 <% @all_posts.each do |post| %>
 <div class= "panel small-12 columns">
   <div class="row">
@@ -22,7 +20,7 @@
           </div>
           &nbsp;
           <div class='row'>
-            <div class = 'large-5 small-8 small-left columns'>
+            <div class = 'small-12 small-left columns'>
               <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button tiny">Summary</a>
               <% if user_signed_in? && (current_user.has_role? :admin) %>
               <%= link_to "Destroy", post, :confirm => 'Are you sure?', :method => :delete %>

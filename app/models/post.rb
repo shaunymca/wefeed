@@ -43,7 +43,7 @@ class Post < ActiveRecord::Base
   
   def last_friend_update(user)
    
-    post_date = self.created_at
+    post_date = self.created_at.to_datetime
     user_repost_date = "27-12-1984".to_datetime
     friends_repost_date = "27-12-1984".to_datetime
     user_comment_date = "27-12-1984".to_datetime
@@ -55,18 +55,18 @@ class Post < ActiveRecord::Base
     friend_comment_maxdate = user.friend_comments.where(['post_id = :post_id',{post_id: self.id}]).map(&:created_at).max
     
     unless user_repost_maxdate.nil?
-      user_repost_date = user_repost_maxdate
+      user_repost_date = user_repost_maxdate.to_datetime
     end
     unless friends_repost_maxdate.nil?
-      friends_repost_date = friends_repost_maxdate
+      friends_repost_date = friends_repost_maxdate.to_datetime
     end
     unless user_comment_maxdate.nil?
-      user_comment_date = user_comment_maxdate
+      user_comment_date = user_comment_maxdate.to_datetime
     end
     unless friend_comment_maxdate.nil?
-      friend_comment_date = friend_comment_maxdate
+      friend_comment_date = friend_comment_maxdate.to_datetime
     end
-    [post_date.to_datetime, user_repost_date.to_datetime, user_comment_date.to_datetime, friend_comment_date.to_datetime].max.to_s
+    [post_date.to_datetime, user_repost_date.to_datetime, friends_repost_date, user_comment_date.to_datetime, friend_comment_date.to_datetime].max
   end
   
 end

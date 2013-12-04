@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     if user_signed_in?
-      @posts = Post.from_users_followed_by(current_user).order("updated_at desc")
+      @posts = Post.from_users_followed_by(current_user).sort_by{ |post| post.last_friend_update(current_user) }.reverse
       @all_posts = Post.all.order("updated_at desc")
     else
       @all_posts = Post.all.order("updated_at desc")
@@ -76,6 +76,6 @@ class PostsController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def post_params
-    params.require(:post).permit(:user_id, :url, :summary, :title)
+    params.require(:post).permit(:user_id, :url, :summary, :title, :last_friend_update)
   end
 end

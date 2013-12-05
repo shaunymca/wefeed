@@ -7,9 +7,9 @@ class PostsController < ApplicationController
   def index
     if user_signed_in?
       @posts = Post.from_users_followed_by(current_user).sort_by{ |post| post.last_friend_update(current_user) }.reverse
-      @all_posts = Post.all.order("updated_at desc")
+      @all_posts = Post.all.order("created_at desc")
     else
-      @all_posts = Post.all.order("updated_at desc")
+      @all_posts = Post.all.order("created_at desc")
     end
   end
   

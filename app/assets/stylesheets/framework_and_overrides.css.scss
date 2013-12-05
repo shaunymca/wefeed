@@ -57,3 +57,24 @@ textarea {
   );
   margin-bottom: 5px
 }
+
+.facebook-button {
+  @extend .button;
+  @extend .round;
+  @extend .tiny;
+  background-color: #3B5998 ;
+}
+
+.twitter-button {
+  @extend .button;
+  @extend .round;
+  @extend .tiny;
+  background-color: #326ada ;
+}
+
+.google-button {
+  @extend .button;
+  @extend .round;
+  @extend .tiny;
+  background-color: #d34836 ;
+}

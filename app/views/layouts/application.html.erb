@@ -19,6 +19,9 @@
             <!-- End Header and Nav -->
             <div class="row">
               <div class="small-12 large-9 columns">
+                <% unless user_signed_in? %>
+                <%= render "devise/shared/omnilinks" %>
+                <% end %>
                 <%= yield %>
                 <%= javascript_include_tag "application" %>
               </div>

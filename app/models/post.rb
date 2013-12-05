@@ -7,7 +7,6 @@ class Post < ActiveRecord::Base
   has_many :resposters, :through => :resposts, :source => :user
   before_validation :generate_summary
   before_validation :write_stripped_url
-  before_validation :check_title
   validates_presence_of :summary
   
   def write_stripped_url
@@ -20,7 +19,7 @@ class Post < ActiveRecord::Base
     full_url = api + self.url.to_s
     response = Unirest::get full_url
     text = JSON.parse response.body.to_json
-    unless text["sm_api_content"].nil? || text["sm_api_message"].blank?
+    if text["sm_api_message"].blank?
       summary = text["sm_api_content"].gsub "\\", ""
       title = text["sm_api_title"].gsub "\\", ""
     else
@@ -45,11 +44,6 @@ OR id IN (:comment_ids) OR id IN (:friend_comment_ids)',
         comment_ids: comment_ids, friend_comment_ids: friend_comment_ids}])
   end
   
-  def check_title
-    if self.title.blank?
-      self.title = "Non-titled url"
-    end
-  end
   
   def last_friend_update(user)
     # setting some initial variables here, so they won't error if null later

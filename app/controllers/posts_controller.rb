@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :check_for_existing_post, only: [:create]
 
   # GET /posts
   # GET /posts.json
@@ -76,6 +77,14 @@ class PostsController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def post_params
-    params.require(:post).permit(:user_id, :url, :summary, :title, :last_friend_update)
+    params.require(:post).permit(:user_id, :url, :summary, :title, :last_friend_update, :stripped_url, :check_for_existing_post)
+  end
+  
+  def check_for_existing_post
+    stripped_param = params[:post][:url].gsub(/\Ahttp:\/\/www.|\Ahttp:|\/+|\Awww./, "")
+    post = Post.where(:stripped_url => stripped_param).first
+    if post
+      redirect_to(post) and return
+    end
   end
 end

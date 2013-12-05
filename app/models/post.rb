@@ -1,13 +1,18 @@
 class Post < ActiveRecord::Base
   include PublicActivity::Model
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  #tracked owner: Proc.new{ |controller, model| controller.current_user }
   belongs_to :user
   has_many :reposts
   has_many :comments
   has_many :resposters, :through => :resposts, :source => :user
-  before_validation :generate_summary
+  #before_validation :generate_summary
+  before_validation :write_stripped_url
   before_validation :check_title
   validates_presence_of :summary
+  
+  def write_stripped_url
+    self.stripped_url = self.url.gsub(/\Ahttp:\/\/www.|\Ahttp:|\/+|\Awww./, "")
+  end
   
   def generate_summary
     key = ENV["SUMMLY"]
@@ -42,18 +47,18 @@ class Post < ActiveRecord::Base
   end
   
   def last_friend_update(user)
-   
+    # setting some initial variables here, so they won't error if null later
     post_date = self.created_at.to_datetime
     user_repost_date = "27-12-1984".to_datetime
     friends_repost_date = "27-12-1984".to_datetime
     user_comment_date = "27-12-1984".to_datetime
     friend_comment_date = "27-12-1984".to_datetime
-    
+    # Getting most recent dates for the current_user and their firends on the post
     user_repost_maxdate = user.reposts.where(['post_id = :post_id',{post_id: self.id}]).map(&:created_at).max
     friends_repost_maxdate = user.friend_reposts.where(['post_id = :post_id',{post_id: self.id}]).map(&:created_at).max
     user_comment_maxdate = user.comments.where(['post_id = :post_id',{post_id: self.id}]).map(&:created_at).max
     friend_comment_maxdate = user.friend_comments.where(['post_id = :post_id',{post_id: self.id}]).map(&:created_at).max
-    
+    # If there are recent dates for activities, set the variables as such
     unless user_repost_maxdate.nil?
       user_repost_date = user_repost_maxdate.to_datetime
     end
@@ -66,6 +71,7 @@ class Post < ActiveRecord::Base
     unless friend_comment_maxdate.nil?
       friend_comment_date = friend_comment_maxdate.to_datetime
     end
+    # get the max of the activity date_times.
     [post_date.to_datetime, user_repost_date.to_datetime, friends_repost_date, user_comment_date.to_datetime, friend_comment_date.to_datetime].max
   end
   

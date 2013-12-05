@@ -73,3 +73,11 @@
 
 <h2>Comments</h2>
 <%= render @post.comments %>
+<% if @repost=='yes' %>
+<ol class="joyride-list" data-joyride>
+  <li <%= ("data-id='#{@post.id}'").html_safe %> data-text="Close" data-options="tip_location: bottom">
+    <p>Looks like someone already submitted that link</p>
+    <p>Click here to share the post with your followers</p>
+  </li>
+</ol>
+<% end %>

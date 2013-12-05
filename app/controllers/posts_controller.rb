@@ -17,6 +17,7 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     @post = Post.find(params[:id])
+    @repost = params[:repost]
   end
   
   # GET /posts/new
@@ -84,7 +85,7 @@ class PostsController < ApplicationController
     stripped_param = params[:post][:url].gsub(/\Ahttp:\/\/www.|\Ahttp:|\/+|\Awww./, "")
     post = Post.where(:stripped_url => stripped_param).first
     if post
-      redirect_to(post) and return
+      redirect_to post_path(post, :repost => 'yes') and return
     end
   end
 end

@@ -16,5 +16,6 @@
 //= require_tree .
 $(function() {
   $(document).foundation();
+  $(document).foundation('joyride', 'start');
 });
 

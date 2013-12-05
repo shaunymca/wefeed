@@ -20,8 +20,13 @@ class Post < ActiveRecord::Base
     full_url = api + self.url.to_s
     response = Unirest::get full_url
     text = JSON.parse response.body.to_json
-    summary = text["sm_api_content"].gsub "\\", ""
-    title = text["sm_api_title"].gsub "\\", ""
+    unless text["sm_api_content"].nil? || text["sm_api_message"].blank?
+      summary = text["sm_api_content"].gsub "\\", ""
+      title = text["sm_api_title"].gsub "\\", ""
+    else
+      summary = text["sm_api_message"]
+      title = "Non-titled url"
+    end
     self.summary = summary
     self.title = title
   end
@@ -33,11 +38,11 @@ class Post < ActiveRecord::Base
     comment_ids = user.comments.map(&:post_id)
     friend_comment_ids = user.friend_comments.map(&:post_id)
     where(['user_id IN (:followed_user_ids) OR user_id = :user_id 
-            OR id IN (:repost_ids) OR id IN (:friend_reposts_ids)
-            OR id IN (:comment_ids) OR id IN (:friend_comment_ids)',
+OR id IN (:repost_ids) OR id IN (:friend_reposts_ids)
+OR id IN (:comment_ids) OR id IN (:friend_comment_ids)',
       {followed_user_ids: followed_user_ids, user_id: user, 
-       repost_ids: repost_ids, friend_reposts_ids: friend_reposts_ids,
-       comment_ids: comment_ids, friend_comment_ids: friend_comment_ids}])
+        repost_ids: repost_ids, friend_reposts_ids: friend_reposts_ids,
+        comment_ids: comment_ids, friend_comment_ids: friend_comment_ids}])
   end
   
   def check_title

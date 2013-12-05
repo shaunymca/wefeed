@@ -1,11 +1,11 @@
 class Post < ActiveRecord::Base
   include PublicActivity::Model
-  #tracked owner: Proc.new{ |controller, model| controller.current_user }
+  tracked owner: Proc.new{ |controller, model| controller.current_user }
   belongs_to :user
   has_many :reposts
   has_many :comments
   has_many :resposters, :through => :resposts, :source => :user
-  #before_validation :generate_summary
+  before_validation :generate_summary
   before_validation :write_stripped_url
   before_validation :check_title
   validates_presence_of :summary

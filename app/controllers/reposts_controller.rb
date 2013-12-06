@@ -26,7 +26,6 @@ class RepostsController < ApplicationController
   # POST /reposts.json
   def create
     @repost = current_user.reposts.build(:post_id => params[:reposted_post_id])
-    @friend = @repost.friend
     respond_to do |format|
       if @repost.save
         format.html { redirect_to posts_path, notice: 'Repost was successfully created.' }

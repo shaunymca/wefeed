@@ -13,6 +13,15 @@
           <% end %>
         </div>
         <div class = "small-8 columns large-10 small-9">
+          <div class "row">
+            <div class = "small-12 columns">
+              <% if current_user.friend_reposts.map(&:post_id).include?(post.id) %>
+              <span data-tooltip class="has-tip tip-top"  title="<%= (" #{
+                    post.reposts.where('user_id IN (:followed_user_ids)', {followed_user_ids: current_user.friend_ids}).each {|repost| repost.user_name}.map(&:user_name).join(', ')
+                    }").html_safe  %>" ><span class="secondary label">Reposted by ...</span></span>
+              <% end %>
+            </div>
+          </div>
           <div class = "row">
             <div class = "small-12 columns hide-for-large-only">
               <medium><%= link_to post.title.html_safe, post.url, :target => "_blank" %></medium>
@@ -21,7 +30,7 @@
               <%= link_to post.title.html_safe, post.url, :target => "_blank" %>              
             </div>
           </div>
-                &nbsp;
+          &nbsp;
           <div class='row'>
             <div class = 'small-12 small-left columns large-8'>
               <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button tiny">Summary</a>

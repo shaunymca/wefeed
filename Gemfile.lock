@@ -104,7 +104,7 @@ GEM
     httpauth (0.2.0)
     httpclient (2.3.4.1)
     hub (1.10.6)
-    i18n (0.6.5)
+    i18n (0.6.9)
     jbuilder (1.5.2)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)

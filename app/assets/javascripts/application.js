@@ -12,12 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require vendor/modernizer
 //= require foundation
-//= require_tree .
+//= require_directory .
 $(function() {
   $(document).foundation();
   $(document).foundation('joyride', 'start');
 });
-
-
-$(function(){ $(document).foundation(); });

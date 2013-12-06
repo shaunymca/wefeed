@@ -2,9 +2,20 @@
 <%= render "posts/no_followers"%>
 <% end %>
 <% @posts.each do |post| %>
+
 <div class= "custom-panel small-12 columns">
   <div class="row">
     <div class= "small-12 columns">
+      <div class "row">
+        <div class = "small-12 columns">
+          <% if current_user.friend_reposts.map(&:post_id).include?(post.id) %>
+          <span data-tooltip class="has-tip tip-top"  title="<%= (" #{
+                post.reposts.where('user_id IN (:followed_user_ids)', {followed_user_ids: current_user.friend_ids}).each {|repost| repost.user_name}.map(&:user_name).join(', ')
+                }").html_safe  %>" ><span class="secondary label">Reposted by ...</span></span>
+          <% end %>
+        </div>
+      </div>
+      <small>&nbsp;</small>
       <div class="row">
         <div class = "small-2 columns large-2 small-3">
           <% unless post.user.nil? %>
@@ -13,15 +24,7 @@
           <% end %>
         </div>
         <div class = "small-8 columns large-10 small-9">
-          <div class "row">
-            <div class = "small-12 columns">
-              <% if current_user.friend_reposts.map(&:post_id).include?(post.id) %>
-              <span data-tooltip class="has-tip tip-top"  title="<%= (" #{
-                    post.reposts.where('user_id IN (:followed_user_ids)', {followed_user_ids: current_user.friend_ids}).each {|repost| repost.user_name}.map(&:user_name).join(', ')
-                    }").html_safe  %>" ><span class="secondary label">Reposted by ...</span></span>
-              <% end %>
-            </div>
-          </div>
+          
           <div class = "row">
             <div class = "small-12 columns hide-for-large-only">
               <medium><%= link_to post.title.html_safe, post.url, :target => "_blank" %></medium>

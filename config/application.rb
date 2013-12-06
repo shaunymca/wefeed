@@ -8,7 +8,7 @@ Bundler.require(:default, Rails.env)
 
 module Wefeed
   class Application < Rails::Application
-    config.assets.paths << Rails.root.join("app", "vendor", "assets", "images")
+
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.test_framework :rspec

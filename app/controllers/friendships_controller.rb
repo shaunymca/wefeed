@@ -6,10 +6,10 @@ class FriendshipsController < ApplicationController
     if @friendship.save
       FriendMailer.follow_email(@followed, @follower).deliver
       flash[:notice] = "Added friend."
-      redirect_to @user
+      return
     else
       flash[:error] = "Unable to add friend."
-      redirect_to @user
+      return
     end
   end
   

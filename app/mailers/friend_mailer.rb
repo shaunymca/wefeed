@@ -4,7 +4,8 @@ class FriendMailer < ActionMailer::Base
   def follow_email(followed, follower)
     @user = followed
     @follower = follower
-    @url  = 'http://example.com/login'
-    mail(to: @user.email, subject: '#{@follower.name} Followed you on WeFeed')
+    @user_url  = 'http://wefeed.co/users/'+@user.id.to_s
+    @follwer_url  = 'http://wefeed.co/users/'+ @follower.id.to_s
+    mail(to: @user.email, subject: "#{@follower.name} Followed you on WeFeed")
   end
 end

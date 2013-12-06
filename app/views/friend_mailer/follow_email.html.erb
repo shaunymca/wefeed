@@ -6,11 +6,11 @@
   <body>
     <h1>Hey <%= @user.name %>,</h1>
     <p>
-      <%= link_to @follower.name, @follower%> just followed you on WeFeed.<br/>
+      <%= link_to @follower.name, "#{@follower_url}" %> just followed you on WeFeed.<br/>
       That's awesome, because they find your posts, reposts and comments valuable and intresting.<br/>
     </p>
     <p>
-      To see all of your followers, you can go to your <%= link_to "profile page", @user %>.
+    To see all of your followers, you can go to your <%= link_to "profile page", "#{@user_url}" %>.
     </p>
     <p>Thanks for being awesome, and have a great day!</p>
     <p>  </p>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hey <%= @user.name %>,</h1>
+    <p>
+      <%= link_to @follower.name, @follower%> just followed you on WeFeed.<br/>
+      That's awesome, because they find your posts, reposts and comments valuable and intresting.<br/>
+    </p>
+    <p>
+      To see all of your followers, you can go to your <%= link_to "profile page", @user %>.
+    </p>
+    <p>Thanks for being awesome, and have a great day!</p>
+    <p>  </p>
+  </body>
+</html>

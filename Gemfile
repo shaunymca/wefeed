@@ -26,6 +26,7 @@ gem 'public_activity'
 gem 'jquery-turbolinks'
 gem 'unirest'
 gem 'redcarpet'
+gem 'pg'
 gem 'acts_as_commentable_with_threading' , :git => 'https://github.com/elight/acts_as_commentable_with_threading.git'
 group :development do
   gem 'sqlite3'
@@ -44,7 +45,6 @@ group :test do
   gem 'email_spec'
 end
 group :production do
-  gem 'pg'
   gem 'rails_12factor'
 end
 gem "mocha", group: :test

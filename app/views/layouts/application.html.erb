@@ -7,7 +7,7 @@
     <title><%= content_for?(:title) ? yield(:title) : "WeFeed" %></title>
     
     <%= stylesheet_link_tag    "application" %>
-
+    
     <%= javascript_include_tag "vendor/modernizr" %>
     <%= csrf_meta_tags %>
   </head>
@@ -24,7 +24,7 @@
                 <%= render "devise/shared/omnilinks" %>
                 <% end %>
                 <%= yield %>
-    <%= javascript_include_tag "application" %>
+                <%= javascript_include_tag "application" %>
               </div>
               <!-- On small devices this column is hidden -->
               <aside class="large-3 columns hide-for-small">

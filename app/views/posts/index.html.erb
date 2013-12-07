@@ -1,10 +1,11 @@
 <% if user_signed_in? %>
 <% if current_user.friends.count > 0 %>
+
 <dl class="tabs" data-tab>
   <dd class="active"><a href="#panel2-1">My Feed</a></dd>
   <dd><a href="#panel2-2">FireHose Feed</a></dd>
 </dl>
-<%= link_to 'New Post', new_post_path, class: "button tiny round", id: "new_link", remote: true %>
+<%= link_to 'New Post', new_post_path, class: "button tiny round", id: "new_link", remote: true, style: "margin-bottom: 0px;" %>
 <div class="tabs-content">
   <div class="content active" id="panel2-1">
     <%= render 'posts/my_feed' %>

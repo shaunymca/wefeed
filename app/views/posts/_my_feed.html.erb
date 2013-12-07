@@ -53,8 +53,8 @@
               <small><%= link_to "#{post.comments.count} comments", post %> </small>
               <div class="row">
                 <ul class="small-block-grid-8">
-                  <% post.reposts.take(8).each do |repost| %>
-                  <li><%= image_tag("#{repost.user.photo_location}") %></li>
+                  <% post.comments.where('user_id IN (:followed_user_ids)', {followed_user_ids: current_user.friend_ids}).take(8).each do |comment| %>
+                  <li><%= image_tag("#{comment.user.photo_location}") %></li>
                   <% end %>
                 </ul>
               </div>

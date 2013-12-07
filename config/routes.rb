@@ -7,6 +7,7 @@ Wefeed::Application.routes.draw do
     resources :comments
   end
   resources :activities
+  resources :comments
   
   root :to => "posts#index"
   

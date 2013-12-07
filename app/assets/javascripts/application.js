@@ -12,9 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require best_in_place
 //= require foundation
 //= require_tree .
 jQuery(function() {
   $(document).foundation();
   $(document).foundation('joyride', 'start');
+  jQuery(".best_in_place").best_in_place();
 });

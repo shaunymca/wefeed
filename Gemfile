@@ -27,7 +27,7 @@ gem 'jquery-turbolinks'
 gem 'unirest'
 gem 'redcarpet'
 gem 'pg'
-gem 'acts_as_commentable_with_threading' , :git => 'https://github.com/elight/acts_as_commentable_with_threading.git'
+gem 'best_in_place', github: 'bernat/best_in_place'
 group :development do
   gem 'sqlite3'
   gem 'better_errors'

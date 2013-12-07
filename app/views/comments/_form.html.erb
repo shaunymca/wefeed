@@ -1,0 +1,9 @@
+<%= simple_form_for(@comment,:remote => true) do |f| %>
+<p>
+  <%= "Add a comment, markdown accepted"  %>
+  <%= f.input :content, :input_html => { :rows => '5' } %>
+</p>
+<p>
+  <%= f.button :submit, :class => "button tiny round" %>
+</p>
+<% end %>

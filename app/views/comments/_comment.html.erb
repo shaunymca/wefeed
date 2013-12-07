@@ -12,8 +12,17 @@
       <% else %>
       <small> User Deleted</small>
       <% end %>
+      
       <small><%= comment.created_at %></small>
-      <%= raw comment.content %>
+      <div class = "row">
+        <div claas = "small-12 columns">
+          <% if comment.user == current_user %>
+          <%= best_in_place comment, :content, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
+          <% else %>
+          <%= raw comment.content %>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

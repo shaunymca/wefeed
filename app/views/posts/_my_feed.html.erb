@@ -53,8 +53,8 @@
               <small><%= link_to "#{post.comments.count} comments", post %> </small>
               <div class="row">
                 <ul class="small-block-grid-8">
-                  <% post.comments.where('user_id IN (:followed_user_ids)', {followed_user_ids: current_user.friend_ids}).take(8).each do |comment| %>
-                  <li><%= image_tag("#{comment.user.photo_location}") %></li>
+                  <% current_user.friends.where('friend_id IN (:comments_user_ids)', {comments_user_ids: post.comments.map(&:user_id)}).uniq.take(8).each do |user| %>
+                  <li><%= image_tag("#{user.photo_location}") %></li>
                   <% end %>
                 </ul>
               </div>

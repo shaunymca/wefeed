@@ -1,5 +1,5 @@
 <% if comment.content %>
-<div class="row">
+<div class="row" "<%=dom_id(comment)%>" >
   <div class="panel radius">
     <div class="row">
       <% if comment.user %>
@@ -14,12 +14,13 @@
       <% end %>
       
       <small><%= comment.created_at %></small>
+      <%= link_to "&#215;".html_safe, comment, :confirm => 'Are you sure?', :method => :delete, remote: true %>
       <div class = "row">
         <div claas = "small-12 columns">
           <% if comment.user == current_user %>
-          <%= best_in_place comment, :content, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
+          <%= best_in_place comment, :content, :type => :textarea, :display_as => :comment_mk, :classes => 'small-12 columns' %>
           <% else %>
-          <%= raw comment.content %>
+          <%= comment.comment_mk %>
           <% end %>
         </div>
       </div>

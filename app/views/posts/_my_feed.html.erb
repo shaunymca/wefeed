@@ -15,6 +15,12 @@
           <small><%= link_to "#{post.comments.count} comments", post %> </small>
         </div>
       </div>
+      <% else %>
+      <div class = "row">
+        <div class = "small-4 small-offset-7 columns hide-for-medium-up">
+          <small><%= link_to "#{post.comments.count} comments", post %> </small>
+        </div>
+      </div>
       <% end %>
       <div class="row">
         <div class = "small-2 columns large-2 small-3">

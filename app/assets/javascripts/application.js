@@ -19,4 +19,6 @@ jQuery(function() {
   $(document).foundation();
   $(document).foundation('joyride', 'start');
   jQuery(".best_in_place").best_in_place();
+  $('#ad-div').sticky({topSpacing:0, wrapperClassName:"large-3 columns large-3 hide-for-small"});
+ 
 });

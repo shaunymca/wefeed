@@ -16,7 +16,7 @@
           <section class="main-section">
             <!-- End Header and Nav -->
             <div class="row">
-              <div class="small-12 large-9 columns">
+              <div class="small-12 large-9 columns large-9">
                 <% unless user_signed_in? %>
                 <%= render "devise/shared/omnilinks" %>
                 <% end %>
@@ -24,9 +24,8 @@
                 <%= javascript_include_tag "application" %>
               </div>
               <!-- On small devices this column is hidden -->
-              <aside class="large-3 columns hide-for-small">
+              <div class="large-3 columns large-3 hide-for-small" id = "ad-div">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- Wefeed Sidebar -->
                 <ins class="adsbygoogle"
                      style="display:inline-block;width:300px;height:600px"
                      data-ad-client="ca-pub-5502427378583818"
@@ -34,7 +33,7 @@
                 <script>
                   (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
-              </aside>
+              </div>
             </div>
           </section>
         </main>

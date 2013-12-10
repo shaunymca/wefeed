@@ -32,6 +32,14 @@
 
 
 <% else %>
+<div data-alert class="alert-box info radius">
+  <h1>Welcome to wefeed</h1>  
+    <p>This is a better content discovery network. You can follow likeminded people,
+  read summaries before clicking on unknown links, and we keep things nice and 
+      organized with <a href="http://blog.wefeed.co/canonical-posts" target="_blank">Conanical Posts</a> and comments.</p>
+  <p>What have you read lately that made you think? <%= link_to 'Log in', new_user_registration_path%> and let us know.</p>
+  <a href="#" class="close">&times;</a>
+</div>
 <%= link_to 'New Post', new_user_registration_path, class: "button tiny round" %>
 <%= render 'posts/all_feed' %>
 <% end %>

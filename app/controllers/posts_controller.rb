@@ -33,6 +33,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
+    
     @post = Post.new(post_params)
     
     respond_to do |format|
@@ -82,10 +83,35 @@ class PostsController < ApplicationController
   end
   
   def check_for_existing_post
+    
+    key = ENV["SUMMLY"]
+    url = params[:post][:url]
+    api = "http://api.smmry.com/&SM_API_KEY=#{key}&SM_WITH_BREAK&SM_LENGTH=7&SM_URL="
+    full_url = api + url
+    response = Unirest::get full_url
+    text = JSON.parse response.body.to_json
+    if text["sm_api_message"].blank?
+      summary = text["sm_api_content"].gsub "\\", ""
+      title = text["sm_api_title"].gsub "\\", ""
+    else
+      summary = text["sm_api_message"] + "Visit #{url}"
+      title = "Non-titled url"
+    end
+    
+    new_params = {:summary => summary, :title => title}
+    params[:post] = params[:post].merge(new_params)
+    
+    # Validating that the blog post is unique. 
+    summary = params[:post][:summary]
+    title = params[:post][:title]
     stripped_param = params[:post][:url].gsub(/\Ahttp:\/\/www.|\Ahttp:|\/+|\Awww./, "")
-    post = Post.where(:stripped_url => stripped_param).first
-    if post
-      redirect_to post_path(post, :repost => 'yes') and return
+    stripped_urls_test = Post.where(:stripped_url => stripped_param).first
+    summary_match = Post.where(:summary => summary).first
+    if stripped_urls_test
+      redirect_to post_path(stripped_urls_test, :repost => 'yes') and return
+    elsif summary_match
+      redirect_to post_path(summary_match, :repost => 'yes') and return
+    else
     end
   end
 end

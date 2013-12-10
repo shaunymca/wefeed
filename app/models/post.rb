@@ -1,33 +1,20 @@
 class Post < ActiveRecord::Base
   include PublicActivity::Model
-  tracked owner: Proc.new{ |controller, model| controller.current_user }
+  #tracked owner: Proc.new{ |controller, model| controller.current_user }
   belongs_to :user
   has_many :reposts
   has_many :comments
   has_many :resposters, :through => :resposts, :source => :user
-  before_validation :generate_summary
   before_validation :write_stripped_url
+  #before_validation :gen_summary_md5
   validates_presence_of :summary
   
   def write_stripped_url
     self.stripped_url = self.url.gsub(/\Ahttp:\/\/www.|\Ahttp:|\/+|\Awww./, "")
   end
   
-  def generate_summary
-    key = ENV["SUMMLY"]
-    api = "http://api.smmry.com/&SM_API_KEY=#{key}&SM_WITH_BREAK&SM_LENGTH=7&SM_URL="
-    full_url = api + self.url.to_s
-    response = Unirest::get full_url
-    text = JSON.parse response.body.to_json
-    if text["sm_api_message"].blank?
-      summary = text["sm_api_content"].gsub "\\", ""
-      title = text["sm_api_title"].gsub "\\", ""
-    else
-      summary = text["sm_api_message"]
-      title = "Non-titled url"
-    end
-    self.summary = summary
-    self.title = title
+  def gen_summary_md5
+    self.summary_md5 = Digest::MD5.hexdigest(self.summary)
   end
   
   def self.from_users_followed_by(user)

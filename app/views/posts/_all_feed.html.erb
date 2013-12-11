@@ -50,7 +50,7 @@
             </div>
             <div class="large-6 columns hide-for-small-only">
               
-              <ul class="small-block-grid-6 left">
+              <ul class="small-block-grid-6">
                 <% if user_signed_in? %>
                 <% current_user.friends.where('friend_id IN (:comments_user_ids)', {comments_user_ids: post.comments.map(&:user_id)}).uniq.take(8).each do |user| %>
                 <li><%= image_tag("#{user.photo_location}") %></li>

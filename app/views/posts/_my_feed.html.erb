@@ -23,13 +23,13 @@
       </div>
       <% end %>
       <div class="row">
-        <div class = "small-2 columns large-2 small-3">
+        <div class = "small-2 columns large-1 small-2">
           <% unless post.user.nil? %>
           <%= link_to image_tag("#{post.user.photo_location}"), post.user %>
           <small><%= link_to post.user.name, post.user %></small>
           <% end %>
         </div>
-        <div class = "small-8 columns large-10 small-9">
+        <div class = "small-10 columns large-11 small-10">
           
           <div class = "row">
             <div class = "small-12 columns hide-for-large-only">
@@ -49,28 +49,28 @@
           &nbsp;
           <div class='row'>
             <div class = 'small-12 small-left columns large-4'>
-              <a href="#" data-reveal-id="<%=dom_id(post)%>" class="radius button tiny">Summary</a>
+              <a href="#" data-reveal-id="<%=dom_id(post)%>">Summary</a> | 
               <% if user_signed_in? %>
               <% if current_user.reposted_posts.include?(post) %>
               <span class="secondary label">Reposted</span>
               <% elsif current_user.posts.include?(post) %>
               <% else %>
-              <%= link_to "Repost", reposts_path(:reposted_post_id => post),:class => "button tiny round", :method => :post, remote: true, :id => "#{post.id}" %>
+              <%= link_to "Repost", reposts_path(:reposted_post_id => post), :method => :post, remote: true, :id => "#{post.id}" %>
               <span style="display: none;" <%= ("id='repost-badge#{post.id}'").html_safe %> class="secondary label">Reposted</span>
               <% end %>
               <% else %>
               <%= link_to "Repost", new_user_registration_path, :class => "button tiny round"%>
               <% end %>
             </div>
-            <div class="large-8 columns hide-for-small-only">
+            <div class="large-2 columns hide-for-small-only">
               <small><%= link_to "#{post.comments.count} comments", post %> </small>
-              <div class="row">
-                <ul class="small-block-grid-8">
-                  <% current_user.friends.where('friend_id IN (:comments_user_ids)', {comments_user_ids: post.comments.map(&:user_id)}).uniq.take(8).each do |user| %>
-                  <li><%= image_tag("#{user.photo_location}") %></li>
-                  <% end %>
-                </ul>
-              </div>
+            </div>
+            <div class="large-6 columns hide-for-small-only">
+              <ul class="small-block-grid-6 left">
+                <% current_user.friends.where('friend_id IN (:comments_user_ids)', {comments_user_ids: post.comments.map(&:user_id)}).uniq.take(8).each do |user| %>
+                <li><%= image_tag("#{user.photo_location}") %></li>
+                <% end %>
+              </ul>
             </div>
           </div>
         </div>

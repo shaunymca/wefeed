@@ -8,6 +8,8 @@ class PostComment < ActionMailer::Base
     @post = comment.post
     @post_url  = 'http://wefeed.co/posts/'+@post.id.to_s
     @commenter_url  = 'http://wefeed.co/users/'+ @commenter.id.to_s
-    mail(to: @user.email, subject: "#{@commenter.name} commented on your wefeed post")
+    unless @user == @commenter
+      mail(to: @user.email, subject: "#{@commenter.name} commented on your wefeed post")
+    end
   end
 end

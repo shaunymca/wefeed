@@ -3,6 +3,7 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @user = current_user
     @comment = @user.comments.create(params[:comment].permit(:post_id, :content))
+    PostComment.post_comment(@comment).deliver
     redirect_to post_path(@post)
   end
   

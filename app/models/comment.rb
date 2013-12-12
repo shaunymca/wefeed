@@ -12,4 +12,9 @@ class Comment < ActiveRecord::Base
     markdown.render(self.content.to_s).html_safe
   end
   
+  def comment_mail
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :no_intra_emphasis => true, :footnotes => true)
+    markdown.render(self.content.to_s)
+  end
+  
 end

@@ -3,3 +3,5 @@ Wefeed
 Discover smart content people, read summaries before the article, and join discussions with [Conanical Posts](http://blog.wefeed.co/canonical-posts).
 
 What have you read lately that made you think? Log in and let us know.
+
+[wefeed.co](www.wefeed.co)

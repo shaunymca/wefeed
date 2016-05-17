@@ -55,12 +55,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.posts', {
+      url: '/posts',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/posts.html',
+          controller: 'PostsCtrl'
         }
       }
     })

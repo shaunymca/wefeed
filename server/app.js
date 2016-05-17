@@ -84,7 +84,7 @@ app.get('/auth/twitter/callback',
     //console.log(req.user);
     userModel.create_user(req.user);
 
-    res.redirect('http://127.0.0.1:8100/#/app');
+    res.redirect('http://127.0.0.1:8100/#/app/posts');
   });
 
 // development only

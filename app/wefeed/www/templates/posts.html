@@ -1,0 +1,20 @@
+<ion-view title="WeFeed" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header padding fade-in">
+    <div class="list card" ng-repeat="post in posts">
+      <div class="item-text-wrap">
+        <div class="imageDiv item-image">
+          <img src="{{post.image}}">
+          <a ng-href="#/app/{{post.pid}}">
+            <div class='item item-text-wrap textToBeOnTop'>
+              <h2>{{post.title}}</h2>
+              <p>{{post.author}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

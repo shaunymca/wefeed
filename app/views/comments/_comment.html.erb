@@ -1,0 +1,37 @@
+<% if comment.content %>
+<div class="row" id = "<%=dom_id(comment)%>" >
+  <div class="custom-panel radius">
+    <div class="row">
+      <% if comment.user %>
+      <div class = "small-2 columns large-1 medium-1 small-2">
+        
+        <%= link_to image_tag("#{comment.user.photo_location}"), comment.user %>
+        
+      </div>
+      <div class = "small-10 columns large-11 medium-11 small-10">
+        <div class= "row" >
+          <div class = "small-3 columns large-2 medium-2 small-2">
+            <small><%= link_to comment.user.name, comment.user %></small>
+            <% else %>
+            <small> User Deleted</small>
+            <% end %>
+          </div>
+          <small><%= comment.created_at %></small>
+          <% if user_signed_in? and (comment.user == current_user or current_user.has_role? :admin) %>
+          <%= link_to "&#215;".html_safe, comment, :confirm => 'Are you sure?', :method => :delete, remote: true %>
+          <% end %>
+          <div class = "row">
+            <div class = "small-12 columns">
+              <% if comment.user == current_user %>
+              <%= best_in_place comment, :content, :type => :textarea, :display_as => :comment_mk, :classes => 'small-12 columns' %>
+              <% else %>
+              <%= comment.comment_mk %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

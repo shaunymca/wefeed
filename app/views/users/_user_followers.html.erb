@@ -1,0 +1,48 @@
+<div class="medium-6 columns">
+  <h2>Following</h2>
+  <div id="followed">
+    <% @followed.each do |friendship| %>
+    <div class="row">
+      <div class="medium-5 columns">
+        <% if friendship.friend.photo_location %>
+        <%= link_to image_tag("#{friendship.friend.photo_location}"), friendship.friend, :class => "th" %>
+        <% end %>
+      </div>
+      <div class="medium-7 columns">
+        <h5><%= link_to friendship.friend.name, friendship.friend %></h5>
+        <% if user_signed_in? && current_user.friends.include?(friendship.friend) %>
+        <% current_user.friendships.where(friend_id: friendship.friend).each do |my_friend| %>
+        <%= link_to "Unfollow", my_friend, :class => "button alert tiny", :method => :delete, remote: true %>
+        <%end %>
+        <% elsif user_signed_in? && friendship.friend != current_user %>
+        <%= link_to "Follow", friendships_path(:friend_id => friendship.friend),:class => "button tiny", :method => :post, remote: true %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="medium-6 columns">
+  <h2>Followers</h2>
+  <div id="Followers">
+    <% @followers.each do |ifriendship| %>
+    <div class="row">
+      <div class="medium-5 columns">
+        <%= link_to image_tag("#{ifriendship.user.photo_location}"), ifriendship.user, :class => "th" %>
+      </div>
+      <div class="medium-7 columns">
+         <h5><%= link_to ifriendship.user.name, ifriendship.user %></h5>
+        <% if user_signed_in? && current_user.friends.include?(ifriendship.user) %>
+        <% current_user.friendships.where(friend_id: ifriendship.user).each do |my_friend| %>
+        <%= link_to "Unfollow", my_friend, :class => "button alert tiny", :method => :delete, remote: true %>
+        <% end %>
+        <% elsif user_signed_in? && ifriendship.user != current_user %>
+        <%= link_to "Follow", friendships_path(:friend_id => ifriendship.user),:class => "button tiny", :method => :post, remote: true %>
+        <% else %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

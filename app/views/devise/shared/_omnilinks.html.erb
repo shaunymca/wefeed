@@ -1,0 +1,5 @@
+<div class="row">
+  <%= link_to "Log in with Google", user_omniauth_authorize_path(:google_oauth2), :class => "google-button" %>
+  <%= link_to "Log in with Twitter", user_omniauth_authorize_path(:twitter), :class => "twitter-button" %>
+  <%= link_to "Log in with Facebook", user_omniauth_authorize_path(:facebook), :class => "facebook-button" %>
+</div>

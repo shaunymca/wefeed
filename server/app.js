@@ -60,7 +60,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(new TwitterStrategy({
     consumerKey: "9KC44mKTaQKNaFhONdEtUOMID",
     consumerSecret: "z6DjPZWU1fVARuzrXhcU8lqwkVMF6SVnOT64SKZWf9THox25Q5",
-    callbackURL: "http://192.168.1.9:3000/auth/twitter/callback"
+    callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, cb) {
     //console.log('token : ' + token);
@@ -76,7 +76,7 @@ app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
 app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: 'http://localhost:8100/#/start' }),
+  passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/start' }),
   function(req, res) {
     // Successful authentication, redirect home.
     console.log('Request and Response');
@@ -84,7 +84,7 @@ app.get('/auth/twitter/callback',
     //console.log(req.user);
     userModel.create_user(req.user);
 
-    res.redirect('http://localhost:8100/#/app');
+    res.redirect('http://127.0.0.1:8100/#/app');
   });
 
 // development only

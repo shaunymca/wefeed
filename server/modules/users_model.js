@@ -13,7 +13,7 @@ exports.create_user = function(user) {
   }
 
   console.log(user.username + user.photos[0].value,  user.id);
-    client.query('Insert into wefeed.users (username, photourl, created_at, modified_at, twitter_id) VALUES($1,$2,$3,$4,$5)',
+    client.query('Insert into wefeed.users (username, photourl, created_at, modified_at, twitter_id) VALUES($1,$2,$3,$4,$5) ON CONFLICT (username) DO NOTHING',
     [user.username, user.photos[0].value, new Date(), new Date(), user.id], function(err, result) {
       //call `done()` to release the client back to the pool
       done();

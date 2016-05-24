@@ -24,7 +24,7 @@ var self = module.exports = {
       access_token_secret: user.twitter_secret
     });
     // FOR TESTING
-    twitterClient.stream('statuses/filter', {track: '#GoogleSummit'}, function(stream) {
+    twitterClient.stream('statuses/filter', {track: 'super bowl'}, function(stream) {
     // for Prod
     //twitterClient.stream('user',  function(stream) {
       stream.on('data', function(tweet) {
@@ -38,11 +38,12 @@ var self = module.exports = {
             parser.parse(url)
             .then(function(data) {
               //console.log(data);
-              articles_model.addArticle(data, user)
-              .then(function(rows) {
-                console.log(rows);
-              });
-
+              if (data) {
+                articles_model.addArticle(data, user)
+                .then(function(rows) {
+                  console.log(rows);
+                });
+              }
             })
           }
         });

@@ -3,3 +3,7 @@ Wefeed
 Discover smart content people, read summaries before the article, and join discussions
 
 What have you read lately that made you think? Log in and let us know.
+
+To run this app, you'll need to have a .env file with the appropirate keys in the root directory.
+Once you have that run:
+`nodemon -r dotenv/config app.js`

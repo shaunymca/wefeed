@@ -15,8 +15,12 @@ var express = require('express'),
   passport = require('passport'),
   bodyParser = require('body-parser'),
   TwitterStrategy = require('passport-twitter').Strategy,
-  userModel = require('./modules/users_model.js');
+  userModel = require('./modules/users_model.js'),
+  twitterStream = require('./modules/twitter.js'),
+  dotenv = require('dotenv'),
+  Q = require('q');
 
+dotenv.load();
 
 var app = module.exports = express();
 
@@ -58,15 +62,17 @@ passport.deserializeUser(function(user, done) {
 });
 
 passport.use(new TwitterStrategy({
-    consumerKey: "9KC44mKTaQKNaFhONdEtUOMID",
-    consumerSecret: "z6DjPZWU1fVARuzrXhcU8lqwkVMF6SVnOT64SKZWf9THox25Q5",
-    callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+    consumerKey: process.env.consumerKey,
+    consumerSecret: process.env.consumerSecret,
+    callbackURL: "http://127.0.0.1:3000/auth/twitter/callback",
+    userAuthorizationURL: 'https://api.twitter.com/oauth/authorize'
   },
   function(token, tokenSecret, profile, cb) {
-    //console.log('token : ' + token);
-    //console.log('tokenSecret : '  + tokenSecret);
-    //console.log(profile);
-    var user = profile
+    var user = [];
+    user.token = token;
+    user.tokenSecret = tokenSecret;
+    user.profile = profile;
+    user.authorized = true;
     return cb(null, user);
   }
 ));
@@ -79,12 +85,18 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/start' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    console.log('Request and Response');
+    //console.log('Request and Response');
     //console.log(req);
-    //console.log(req.user);
-    userModel.create_user(req.user);
-
-    res.redirect('http://127.0.0.1:8100/#/app/posts');
+    userModel.create_user(req.user)
+    .then (function(row) {
+      if (row != "exists") {
+        console.log(row);
+        user = {id:row[0], twitter_token:row[1], twitter_secret:row[2]};
+        console.log(user);
+        twitterStream.stream(user)
+      }
+      res.redirect('http://127.0.0.1:8100/#/app/posts');
+    });
   });
 
 // development only
@@ -110,7 +122,7 @@ app.post('/create')
 /**
  * Start Server
  */
-
+twitterStream.init();
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });

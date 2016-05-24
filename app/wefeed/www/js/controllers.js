@@ -56,7 +56,7 @@ angular.module('starter.controllers', [])
     var platform = $cordovaDevice.getPlatform();
 
     var uuid = $cordovaDevice.getUUID();
-    console.log('test');
+    //console.log('test');
     console.log(uuid);
     $scope.uuid = uuid;
     var version = $cordovaDevice.getVersion();

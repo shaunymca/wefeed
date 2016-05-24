@@ -3,15 +3,24 @@ var Client = require('node-rest-client').Client
     parseCanonicalUrl = require('parse-canonical-url'),
     Q = require('q');
 
-exports.parse = function(url) {
-  var client = new Client();
-  var instaparserKey = process.env.instaparserKey
-  var url = "https://www.instaparser.com/api/1/article?api_key=" + instaparserKey + "&url=" + url;
-  client.get(url, function (data, response) {
-  	// parsed response body as js object
-  	console.log(data);
-  	// raw response
-  	//console.log(response);
+exports.parse = function(providedUrl) {
+  return Q.Promise(function(resolve) {
+    var client = new Client();
+    var instaparserKey = process.env.instaparserKey
+    var url = "https://www.instaparser.com/api/1/article?api_key=" + instaparserKey + "&url=" + providedUrl;
+    console.log(url);
+    client.get(url, function (data, response) {
+    	// parsed response body as js object
+      if (data.images && data.images.length > 1 && !data.thumbnail) {
+        data.thumbnail = data.images[1]
+        }
+      else if (data.images && !data.thumbnail) {
+        data.thumbnail = data.images[0]
+      }
+      resolve(data);
+    	// raw response
+    	//console.log(response);
+    });
   });
 }
 

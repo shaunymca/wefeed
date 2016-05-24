@@ -2,7 +2,8 @@ var Twitter = require('twitter'),
     users = require('./users_model.js'),
     async = require('async'),
     parser = require('./articleparse.js'),
-    Q = require('q');
+    Q = require('q'),
+    articles_model = require('./articles_model.js');
 
 var self = module.exports = {
   init : function() {
@@ -23,30 +24,9 @@ var self = module.exports = {
       access_token_secret: user.twitter_secret
     });
     // FOR TESTING
-    /*
-    twitterClient.stream('statuses/filter', {track: 'Cornel West'}, function(stream) {
-      stream.on('data', function(tweet) {
-        var text = tweet.text;
-        if (tweet.retweeted_status) {
-          text = tweet.retweeted_status.text;
-        }
-        parser.identifyUrl(text)
-        .then(function(url){
-          console.log("returned url " + url);
-          if (url) {
-            parser.parse(url)
-          }
-        });
-      });
-
-      stream.on('error', function(error) {
-        throw error;
-      });
-    });
-    */
+    twitterClient.stream('statuses/filter', {track: '#GoogleSummit'}, function(stream) {
     // for Prod
-
-    twitterClient.stream('user',  function(stream) {
+    //twitterClient.stream('user',  function(stream) {
       stream.on('data', function(tweet) {
         var text = tweet.text;
         if (tweet.retweeted_status) {
@@ -54,9 +34,16 @@ var self = module.exports = {
         }
         parser.identifyUrl(text)
         .then(function(url){
-          console.log("returned url " + url);
           if (url) {
             parser.parse(url)
+            .then(function(data) {
+              //console.log(data);
+              articles_model.addArticle(data, user)
+              .then(function(rows) {
+                console.log(rows);
+              });
+
+            })
           }
         });
       });
@@ -65,6 +52,7 @@ var self = module.exports = {
         throw error;
       });
     });
+
 
   }
 }

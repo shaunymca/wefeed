@@ -20,7 +20,8 @@ var express = require('express'),
   dotenv = require('dotenv'),
   Q = require('q');
 
-dotenv.load();
+//dotenv.load();
+//  console.log(process.env);
 
 var app = module.exports = express();
 

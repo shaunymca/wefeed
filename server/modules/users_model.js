@@ -5,7 +5,6 @@ pg.defaults.poolIdleTimeout = 12000000;
 pg.defaults.poolSize = 20;
 var conString = process.env.databaseString;
 
-
 exports.create_user = function(user) {
   return Q.Promise(function(resolve) {
   //console.log(user);

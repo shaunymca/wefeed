@@ -23,14 +23,15 @@ var self = module.exports = {
       access_token_key: user.twitter_token,
       access_token_secret: user.twitter_secret
     });
-    // FOR TESTING
-    twitterClient.stream('statuses/filter', {track: 'super bowl'}, function(stream) {
+    // FOR TESTING change the track field to something that is trending on twitter.
+    //twitterClient.stream('statuses/filter', {track: 'State Dept'}, function(stream) {
     // for Prod
-    //twitterClient.stream('user',  function(stream) {
+    twitterClient.stream('user',  function(stream) {
       stream.on('data', function(tweet) {
         var text = tweet.text;
         if (tweet.retweeted_status) {
           text = tweet.retweeted_status.text;
+          return
         }
         parser.identifyUrl(text)
         .then(function(url){
@@ -42,6 +43,8 @@ var self = module.exports = {
                 articles_model.addArticle(data, user)
                 .then(function(rows) {
                   console.log(rows);
+                  //console.log(rows[0].id, user.id);
+                  articles_model.addRepost(rows[0].id, user.id,tweet.user.id)
                 });
               }
             })

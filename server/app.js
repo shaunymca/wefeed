@@ -18,7 +18,8 @@ var express = require('express'),
   userModel = require('./modules/users_model.js'),
   twitterStream = require('./modules/twitter.js'),
   dotenv = require('dotenv'),
-  Q = require('q');
+  Q = require('q'),
+  articleModel = require('./modules/articles_model.js');
 
 //dotenv.load();
 //  console.log(process.env);
@@ -74,7 +75,18 @@ passport.use(new TwitterStrategy({
     user.tokenSecret = tokenSecret;
     user.profile = profile;
     user.authorized = true;
-    return cb(null, user);
+
+    userModel.create_user(user)
+    .then (function(row) {
+      var user = {};
+      if (row.exists == false) {
+        user = {id:row[0], twitter_token:row[1], twitter_secret:row[2]};
+        twitterStream.stream(user)
+      } else {
+        user = row;
+      }
+      return cb(null, user);
+    });
   }
 ));
 
@@ -82,24 +94,31 @@ passport.use(new TwitterStrategy({
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
-app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/start' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    //console.log('Request and Response');
-    //console.log(req);
-    userModel.create_user(req.user)
-    .then (function(row) {
-      if (row != "exists") {
-        console.log(row);
-        user = {id:row[0], twitter_token:row[1], twitter_secret:row[2]};
-        console.log(user);
-        twitterStream.stream(user)
-      }
-      res.redirect('http://127.0.0.1:8100/#/app/posts');
-    });
-  });
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/start' }), function(req, res) {
+  res.redirect('http://127.0.0.1:8100/#/app/posts');
+  // Successful authentication, redirect home.
+  //console.log('Request and Response');
+  //console.log(req);
+});
 
+app.get('/api/profile', function(req, res) {
+  if (req.user) {
+    userModel.findUserProfile(req.user.id)
+    .then(function(user){
+      res.json(user);
+    })
+  } else {
+    res.redirect('http://127.0.0.1:8100/#/start');
+  }
+
+});
+
+app.get('/api/posts', function(req, res) {
+  articleModel.getUserPosts(req.user.id)
+  .then(function(rows){
+    res.json(rows);
+  })
+})
 // development only
 // if (env === 'development') {
 //   app.use(express.errorHandler());

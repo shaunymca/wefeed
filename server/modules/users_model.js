@@ -12,13 +12,17 @@ exports.create_user = function(user) {
       if(err) {
         return console.error('error fetching client from pool', err);
     }
-      client.query('Insert into wefeed.users (username, photourl, created_at, modified_at, twitter_id, twitter_token, twitter_secret) VALUES($1,$2,$3,$4,$5,$6,$7) ON CONFLICT (username) DO NOTHING RETURNING (id, twitter_token, twitter_secret)',
+
+      client.query("WITH ins AS (INSERT INTO wefeed.users (username, photourl, created_at, modified_at, twitter_id, twitter_token, twitter_secret) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT (twitter_id) DO NOTHING RETURNING id) SELECT id FROM ins UNION ALL SELECT id FROM wefeed.users WHERE twitter_id = $5 LIMIT  1;",
       [user.profile.username, user.profile.photos[0].value, new Date(), new Date(), user.profile.id, user.token, user.tokenSecret], function(err, result) {
         //call `done()` to release the client back to the pool
-        //console.log(result);
-        if (result.rows[0]) {
+        if (result.rows[0].id) {
+          var data = {exists:true, id : result.rows[0].id }
+          resolve(data)
+        }
+        else if (result.rows[0]) {
           resolve(result.rows[0].row.split('(')[1].split(')')[0].split(','));
-        } else {resolve('exists');}
+        }
         done();
         if(err) {
           return console.error('error running query', err);
@@ -26,6 +30,25 @@ exports.create_user = function(user) {
       });
     });
   });
+}
+
+exports.findUserProfile = function(userId) {
+  return Q.promise(function(resolve) {
+    pg.connect(conString, function(err, client, done) {
+      if(err) {
+        return console.error('error fetching client from pool', err);
+      }
+      client.query('SELECT id, username, photourl FROM wefeed.users where id = $1;',[userId], function(err, result) {
+        resolve(result.rows);
+        //call `done()` to release the client back to the pool
+        done();
+
+        if(err) {
+          return console.error('error running query', err);
+        }
+      });
+    })
+  })
 }
 
 exports.getTwitterDetails = function() {

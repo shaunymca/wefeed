@@ -48,22 +48,33 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
   })
 
   .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
+    url: '/browse',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/browse.html'
       }
-    })
-    .state('app.posts', {
-      url: '/posts',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/posts.html',
-          controller: 'PostsCtrl'
-        }
+    }
+  })
+
+  .state('app.posts', {
+    url: '/posts',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/posts.html',
+        controller: 'PostsCtrl'
       }
-    })
+    }
+  })
+
+  .state('app.post', {
+    url: '/post/:postId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/post.html',
+        controller: 'PostsCtrl'
+      }
+    }
+  })
 
   .state('app.single', {
     url: '/playlists/:playlistId',

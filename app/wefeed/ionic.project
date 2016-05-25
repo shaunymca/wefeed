@@ -1,4 +1,8 @@
 {
   "name": "wefeed",
-  "app_id": "c47352e3"
+  "app_id": "c47352e3",
+  "proxies": [{
+     "path": "/api",
+     "proxyUrl": "http://127.0.0.1:3000/api"
+  }]
 }

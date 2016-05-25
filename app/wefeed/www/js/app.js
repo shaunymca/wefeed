@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
     }
   });
 })
-
+.constant('api', '')
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('start', {

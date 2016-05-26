@@ -93,7 +93,6 @@ passport.use(new TwitterStrategy({
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
-<<<<<<< HEAD
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/start' }), function(req, res) {
   res.redirect('http://127.0.0.1:8100/#/app/posts');
   // Successful authentication, redirect home.

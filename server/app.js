@@ -75,7 +75,6 @@ passport.use(new TwitterStrategy({
     user.tokenSecret = tokenSecret;
     user.profile = profile;
     user.authorized = true;
-
     userModel.create_user(user)
     .then (function(row) {
       var user = {};
@@ -110,7 +109,6 @@ app.get('/api/profile', function(req, res) {
   } else {
     res.redirect('http://127.0.0.1:8100/#/start');
   }
-
 });
 
 app.get('/api/posts', function(req, res) {

@@ -21,7 +21,7 @@ angular.module('starter.controllers', [])
     $scope.posts = result
 
   });
-  // this will come from the backend eventually
+  $scope.postId = $state.params.postId;
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

@@ -15,7 +15,7 @@ angular.module('starter.controllers', [])
   //});
 })
 
-.controller('PostsCtrl', function($scope, $http, api) {
+.controller('PostsCtrl', function($scope, $http, api, $state, $sce) {
   $http.get(api + "/api/posts").success(function(result) {
     console.log(result);
     $scope.posts = result
@@ -45,4 +45,10 @@ angular.module('starter.controllers', [])
     var version = $cordovaDevice.getVersion();
 
   }, false);
+})
+
+.filter('html', function($sce) {
+  return function(val) {
+    return $sce.trustAsHtml(val);
+  };
 });

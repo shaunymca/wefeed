@@ -4,7 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova','auth0',
+  'angular-storage',
+  'angular-jwt'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,37 +24,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
   });
 })
 .constant('api', '')
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider,
+  jwtInterceptorProvider) {
   $stateProvider
-    .state('start', {
-      url: '/start',
-      abstract: false,
-      templateUrl: 'templates/start.html',
-      controller: 'StartCtrl'
+    .state('login', { // Notice: this state name matches the loginState property value to set in authProvider.init({...}) below...
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl',
     })
-
     .state('app', {
     url: '/app',
     abstract: false,
     templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
-  })
--->
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
-      }
-    }
-  })
-
-  .state('app.browse', {
-    url: '/browse',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/browse.html'
-      }
+    controller: 'AppCtrl',
+    data: {
+      requiresLogin:true
     }
   })
 
@@ -61,7 +47,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
     views: {
       'menuContent': {
         templateUrl: 'templates/posts.html',
-        controller: 'PostsCtrl'
+        controller: 'PostsCtrl',
+        data: {
+          requiresLogin:true
+        }
       }
     }
   })
@@ -71,20 +60,68 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
     views: {
       'menuContent': {
         templateUrl: 'templates/post.html',
-        controller: 'PostsCtrl'
-      }
-    }
-  })
-
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        controller: 'PostsCtrl',
+        data: {
+          requiresLogin:true
+        }
       }
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/start');
+  $urlRouterProvider.otherwise('/login');
+
+  authProvider.init({
+    domain: 'wefeed.auth0.com',
+    clientID: 'iUze9Avx35TCTZJt78OE3SjuL0IpX6kU',
+    loginState: 'login' // This is the name of the state where you'll show the login, which is defined above...
+  });
+  jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+    var idToken = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    // If no token return null
+    if (!idToken || !refreshToken) {
+      return null;
+    }
+    // If token is expired, get a new one
+    if (jwtHelper.isTokenExpired(idToken)) {
+      return auth.refreshIdToken(refreshToken).then(function(idToken) {
+        store.set('token', idToken);
+        return idToken;
+      });
+    } else {
+      return idToken;
+    }
+  }
+  $httpProvider.interceptors.push('jwtInterceptor');
+})
+
+.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $location) {
+  // This hooks all auth events to check everything as soon as the app starts
+  auth.hookEvents();
+  var refreshingToken = null;
+  $rootScope.$on('$locationChangeStart', function() {
+    var token = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    if (token) {
+      if (!jwtHelper.isTokenExpired(token)) {
+        if (!auth.isAuthenticated) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      } else {
+        if (refreshToken) {
+          if (refreshingToken === null) {
+            refreshingToken = auth.refreshIdToken(refreshToken).then(function(idToken) {
+              store.set('token', idToken);
+              auth.authenticate(store.get('profile'), idToken);
+            }).finally(function() {
+              refreshingToken = null;
+            });
+          }
+          return refreshingToken;
+        } else {
+          $location.path('/login');// Notice: this url must be the one defined
+        }                          // in your login state. Refer to step 5.
+      }
+    }
+  });
 });

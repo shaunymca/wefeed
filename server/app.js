@@ -93,12 +93,13 @@ passport.use(new TwitterStrategy({
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/start' }), function(req, res) {
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: 'http://127.0.0.1:8100/#/login' }), function(req, res) {
   res.redirect('http://127.0.0.1:8100/#/app/posts');
   // Successful authentication, redirect home.
   //console.log('Request and Response');
   //console.log(req);
 });
+
 
 app.get('/api/profile', function(req, res) {
   if (req.user) {
@@ -112,11 +113,26 @@ app.get('/api/profile', function(req, res) {
 });
 
 app.get('/api/posts', function(req, res) {
-  articleModel.getUserPosts(req.user.id)
+  articleModel.getUserPosts(req.headers.userid)
   .then(function(rows){
     res.json(rows);
   })
 })
+
+app.post('/api/user', function(req, res) {
+  //console.log(req.body);
+  userModel.create_user(req.body)
+  .then (function(row) {
+    var user = {};
+    if (row.exists == false) {
+      user = {id:row[0]};
+      twitterStream.stream(user)
+    } else {
+      user = row;
+    }
+    res.json(user.id);
+  });
+});
 // development only
 // if (env === 'development') {
 //   app.use(express.errorHandler());

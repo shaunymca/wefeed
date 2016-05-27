@@ -11,10 +11,10 @@ exports.create_user = function(user) {
     pg.connect(conString, function(err, client, done) {
       if(err) {
         return console.error('error fetching client from pool', err);
-    }
-
+      }
+      console.log(user);
       client.query("WITH ins AS (INSERT INTO wefeed.users (username, photourl, created_at, modified_at, twitter_id, twitter_token, twitter_secret) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT (twitter_id) DO NOTHING RETURNING id) SELECT id FROM ins UNION ALL SELECT id FROM wefeed.users WHERE twitter_id = $5 LIMIT  1;",
-      [user.profile.username, user.profile.photos[0].value, new Date(), new Date(), user.profile.id, user.token, user.tokenSecret], function(err, result) {
+      [user.screen_name, user.picture, new Date(), new Date(), user.identities[0].user_id, user.identities[0].access_token, user.identities[0].access_token_secret], function(err, result) {
         //call `done()` to release the client back to the pool
         if (result.rows[0].id) {
           var data = {exists:true, id : result.rows[0].id }
@@ -23,10 +23,10 @@ exports.create_user = function(user) {
         else if (result.rows[0]) {
           resolve(result.rows[0].row.split('(')[1].split(')')[0].split(','));
         }
-        done();
-        if(err) {
+        else if (err) {
           return console.error('error running query', err);
         }
+        done();
       });
     });
   });

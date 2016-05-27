@@ -42,7 +42,6 @@ var self = module.exports = {
               if (data) {
                 articles_model.addArticle(data, user)
                 .then(function(rows) {
-                  console.log(rows);
                   //console.log(rows[0].id, user.id);
                   articles_model.addRepost(rows[0].id, user.id,tweet.user.id)
                 });

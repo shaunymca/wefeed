@@ -5,6 +5,7 @@ var Client = require('node-rest-client').Client
 
 
 exports.parse = function(providedUrl) {
+  console.log(providedUrl);
   return Q.Promise(function(resolve) {
     var client = new Client();
     var extractlyKey = process.env.extractlyKey

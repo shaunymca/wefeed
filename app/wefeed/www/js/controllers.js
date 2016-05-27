@@ -1,12 +1,7 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $http, api) {
-  var profile = api + "/api/profile";
-  console.log(profile);
-  $http.get(profile).success(function(result) {
-    console.log(result);
-    $scope.profile = result
-  });
+.controller('AppCtrl', function(store, $scope, $ionicModal, $timeout, $http, api) {
+  $scope.profile = store.get('profile')
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -15,16 +10,57 @@ angular.module('starter.controllers', [])
   //});
 })
 
-.controller('PostsCtrl', function($scope, $http, api, $state, $sce) {
-  $http.get(api + "/api/posts").success(function(result) {
+.controller('PostsCtrl', function(store, $scope, $http, api, $state, $sce) {
+  $scope.profile = store.get('profile')
+  var config = {headers:  {
+        'userId': $scope.profile.databaseId
+      }
+  }
+  $http.get(api + "/api/posts", config).success(function(result) {
     console.log(result);
     $scope.posts = result
-
-  });
+  })
   $scope.postId = $state.params.postId;
+  $scope.doRefresh = function() {
+    $http.get(api + "/api/posts", config).success(function(result) {
+      console.log(result);
+      $scope.posts = result
+    })
+   .finally(function() {
+     // Stop the ion-refresher from spinning
+     $scope.$broadcast('scroll.refreshComplete');
+   });
+  };
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
+})
+
+.controller('LoginCtrl', function(store, $scope, $location, auth, $http, api) {
+  $scope.login = function() {
+    auth.signin({
+      authParams: {
+        scope: 'openid offline_access',
+        device: 'Mobile device'
+      }
+    }, function(profile, token, accessToken, $state, refreshToken) {
+      // Success callback
+      $http.post(api + "/api/user", profile).success(function(result) {
+        //console.log(result);
+        profile.databaseId = result;
+        store.set('profile', profile);
+        store.set('token', token);
+        store.set('refreshToken', refreshToken);
+        profile.refreshToken = refreshToken;
+        profile.token = token;
+        $scope.profile = profile;
+        $location.path('/app/posts');
+        $state = 'app.posts';
+      });
+    }, function() {
+      // Error callback
+    });
+  }
 })
 
 .controller('StartCtrl', function($scope, $state, $stateParams, $http, $cordovaDevice) {

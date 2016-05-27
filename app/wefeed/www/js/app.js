@@ -75,9 +75,53 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova','auth0',
     clientID: 'iUze9Avx35TCTZJt78OE3SjuL0IpX6kU',
     loginState: 'login' // This is the name of the state where you'll show the login, which is defined above...
   });
+  jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+    var idToken = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    // If no token return null
+    if (!idToken || !refreshToken) {
+      return null;
+    }
+    // If token is expired, get a new one
+    if (jwtHelper.isTokenExpired(idToken)) {
+      return auth.refreshIdToken(refreshToken).then(function(idToken) {
+        store.set('token', idToken);
+        return idToken;
+      });
+    } else {
+      return idToken;
+    }
+  }
+  $httpProvider.interceptors.push('jwtInterceptor');
 })
 
-.run(function(auth) {
+.run(function($ionicPlatform, $rootScope, auth, store, jwtHelper, $location) {
   // This hooks all auth events to check everything as soon as the app starts
   auth.hookEvents();
+  var refreshingToken = null;
+  $rootScope.$on('$locationChangeStart', function() {
+    var token = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    if (token) {
+      if (!jwtHelper.isTokenExpired(token)) {
+        if (!auth.isAuthenticated) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      } else {
+        if (refreshToken) {
+          if (refreshingToken === null) {
+            refreshingToken = auth.refreshIdToken(refreshToken).then(function(idToken) {
+              store.set('token', idToken);
+              auth.authenticate(store.get('profile'), idToken);
+            }).finally(function() {
+              refreshingToken = null;
+            });
+          }
+          return refreshingToken;
+        } else {
+          $location.path('/login');// Notice: this url must be the one defined
+        }                          // in your login state. Refer to step 5.
+      }
+    }
+  });
 });

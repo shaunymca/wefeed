@@ -1,7 +1,14 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function(store, $scope, $ionicModal, $timeout, $http, api) {
+.controller('AppCtrl', function(store, $scope, $ionicModal, $timeout, auth, $location) {
   $scope.profile = store.get('profile')
+  $scope.logout = function() {
+    console.log('log out');
+    auth.signout();
+    store.remove('profile');
+    store.remove('token');
+    $location.path('/login');
+  }
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -10,7 +17,7 @@ angular.module('starter.controllers', [])
   //});
 })
 
-.controller('PostsCtrl', function(store, $scope, $http, api, $state, $sce) {
+.controller('PostsCtrl', function(store, $scope, $http, api, $state, $sce, $ionicBackdrop) {
   $scope.profile = store.get('profile')
   var config = {headers:  {
         'userId': $scope.profile.databaseId
@@ -19,6 +26,7 @@ angular.module('starter.controllers', [])
   $http.get(api + "/api/posts", config).success(function(result) {
     console.log(result);
     $scope.posts = result
+    $ionicBackdrop.release()
   })
   $scope.postId = $state.params.postId;
   $scope.doRefresh = function() {
@@ -36,8 +44,9 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('LoginCtrl', function(store, $scope, $location, auth, $http, api) {
+.controller('LoginCtrl', function(store, $scope, $location, auth, $http, api, $ionicBackdrop, $rootScope) {
   $scope.login = function() {
+    $ionicBackdrop.retain();
     auth.signin({
       authParams: {
         scope: 'openid offline_access',
@@ -55,7 +64,7 @@ angular.module('starter.controllers', [])
         profile.token = token;
         $scope.profile = profile;
         $location.path('/app/posts');
-        $state = 'app.posts';
+        //$state = 'app.posts';
       });
     }, function() {
       // Error callback

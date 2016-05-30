@@ -7,18 +7,16 @@
       pulling-text="Pull to refresh..."
       on-refresh="doRefresh()">
     </ion-refresher>
-    <div class="list card" ng-repeat="post in posts">
-      <div class="item-text-wrap">
-        <div class="imageDiv item-image">
-          <img src="{{post.primaryimg}}">
-          <a ng-href="#/app/post/{{post.id}}">
-            <div class='item item-text-wrap textToBeOnTop'>
-              <h2>{{post.title}}</h2>
-              <p>{{post.author}}</p>
-            </div>
-          </a>
-        </div>
+    <ion-list>
+      <div item-height= "250px" class="imageDiv item-image" collection-repeat="post in posts">
+        <img src="{{post.primaryimg}}">
+        <a ng-href="#/app/post/{{post.id}}">
+          <div class='item item-text-wrap textToBeOnTop'>
+            <h2>{{post.title}}</h2>
+            <p>{{post.author}}</p>
+          </div>
+        </a>
       </div>
-    </div>
+    </ion-list>
   </ion-content>
 </ion-view>

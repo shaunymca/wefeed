@@ -24,6 +24,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova','auth0',
   });
 })
 .constant('api', '')
+//.constant('api', '')
 .config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider,
   jwtInterceptorProvider) {
   $stateProvider

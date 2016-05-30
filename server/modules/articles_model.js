@@ -66,7 +66,7 @@ exports.getUserPosts = function(userId){
       client.query('SELECT distinct(a.id), a.user_id, a.primaryimg, a.author, a.title, a.content, a.site_name, max(b.id) as repost_id, max(b.created_at) as recent_activity FROM wefeed.articles a INNER JOIN wefeed.reposts b ON a.id = article_id where a.user_id = $1 and a.is_deleted = false and b.is_deleted=false group by a.id order by recent_activity desc LIMIT 1000', [userId]
       , function(err, result) {
         //call `done()` to release the client back to the pool
-        console.log(result);
+        //console.log(result);
         if (result) {
           resolve(result.rows);
         } else {

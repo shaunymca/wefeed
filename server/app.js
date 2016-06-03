@@ -133,6 +133,10 @@ app.post('/api/user', function(req, res) {
     res.json(user.id);
   });
 });
+
+app.get('thumbdone', function(req, res) {
+  console.log(req);
+});
 // development only
 // if (env === 'development') {
 //   app.use(express.errorHandler());
@@ -151,8 +155,6 @@ if (env === 'production') {
 app.get('/', function(req, res) {
   res.sendfile(__dirname + "/public/js/partials/index.html");
 });
-
-app.post('/create')
 /**
  * Start Server
  */

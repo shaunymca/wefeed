@@ -1,6 +1,6 @@
 <ion-view>
   <ion-content class="padding-horizontal">
-    <div ng-repeat="post in posts | filter:{id:postId}" class="card">
+    <div ng-repeat="post in posts | filter:{id:postId}">
       <img src="{{post.image}}">
       <h1>{{post.title}}</h1>
       <h3>{{post.author}}</h3>

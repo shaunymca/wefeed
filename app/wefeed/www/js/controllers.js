@@ -26,7 +26,13 @@ angular.module('starter.controllers', [])
   $http.get(api + "/api/posts", config).success(function(result) {
     console.log(result);
     $scope.posts = result
+    for (var i = 0; i < $scope.posts.length; i++) {
+      $scope.posts[i].content = $scope.posts[i].content.replace(/<img/g,'<img class="full-image"')
+      console.log(i);
+      $scope.apply;
+    }
     $ionicBackdrop.release()
+
   })
   $scope.postId = $state.params.postId;
   $scope.doRefresh = function() {

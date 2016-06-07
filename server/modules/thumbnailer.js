@@ -11,10 +11,10 @@ var Client = require('thumbd').Client,
 
 exports.thumbd = function(uri, articleId) {
   console.log(uri, articleId);
+  console.log(__dirname + '/../temp/' + articleId + '.png')
   var location = '/Users/smcavinney/Documents/My Documents/wefeed/server/temp/' + articleId + '.png'
   var destination = "/thumbs/" + articleId + ".png";
   download(uri, location, function(){
-    console.log('done');
     client.upload(location, destination, function(err) {
       if (err) console.log(err);
       client.thumbnail(destination, [
@@ -25,8 +25,10 @@ exports.thumbd = function(uri, articleId) {
             "strategy": "bounded"
         }
         ], {
+
           //notify: 'http://localhost:3000/thumbdone'
       });
+      fs.unlink(location);
     });
   });
 }

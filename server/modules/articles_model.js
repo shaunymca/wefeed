@@ -13,15 +13,16 @@ exports.addArticle = function(article, user){
   return Q.Promise(function(resolve) {
   //console.log(user.id);
   // thumb(options, callback);
+    //console.log(article);
     pg.connect(conString, function(err, client, done) {
       if(err) {
         return console.error('error fetching client from pool', err);
     }
-      client.query('Insert into wefeed.articles (user_id, url, created_at, modified_at, title, content, author, site_name) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (url) DO NOTHING RETURNING (id)',
-      [user.id, article.url, new Date(), new Date(), article.title, article.content, article.author, article.provider_name], function(err, result) {
+      client.query('Insert into wefeed.articles (user_id, url, created_at, modified_at, title, content, author, site_name, primaryimg) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (url) DO NOTHING RETURNING (id)',
+      [user.id, article.url, new Date(), new Date(), article.title, article.content, article.author, article.provider_name, article.images[0].url], function(err, result) {
         //call `done()` to release the client back to the pool
         if (result) {
-          resizeImages(result.rows[0].primaryimg, result[0].id)
+          resizeImages(article.images[0].url, result.rows[0].id)
           .then(article => { resolve(article)})
         } else {
           resolve('exists');}
@@ -42,10 +43,9 @@ resizeImages = function(url, articleId){
       if(err) {
         return console.error('error fetching client from pool', err);
     }
-    client.query('UPDATE wefeed.articles SET primaryimg = $1 where id = $2', ["https://s3-us-west-2.amazonaws.com/wefeed-thumb/thumbs/" + articleId + "_tn.jpg",articleId], function(err, primresult) {
+    client.query('UPDATE wefeed.articles SET primaryimg = $1 where id = $2 returning id', ["https://s3-us-west-2.amazonaws.com/wefeed-thumb/thumbs/" + articleId + "_tn.jpg",articleId], function(err, primresult) {
       if (primresult) {
-        console.log(primresult);
-        resolve(primresult.rows)
+        resolve(primresult)
       } else {
         resolve('exists')}
       });

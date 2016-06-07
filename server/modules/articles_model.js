@@ -21,7 +21,7 @@ exports.addArticle = function(article, user){
       client.query('Insert into wefeed.articles (user_id, url, created_at, modified_at, title, content, author, site_name, primaryimg) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (url) DO NOTHING RETURNING (id)',
       [user.id, article.url, new Date(), new Date(), article.title, article.content, article.author, article.provider_name, article.images[0].url], function(err, result) {
         //call `done()` to release the client back to the pool
-        if (result) {
+        if (result.rows[0]) {
           resizeImages(article.images[0].url, result.rows[0].id)
           .then(article => { resolve(article)})
         } else {

@@ -7,12 +7,13 @@ var Client = require('thumbd').Client,
         s3Bucket: process.env.BUCKET
     }),
     fs = require('fs'),
-    request = require('request');
+    request = require('request'),
+    path = require("path"),
+    base = path.dirname(require.main.filename);
 
 exports.thumbd = function(uri, articleId) {
-  console.log(uri, articleId);
-  console.log(__dirname + '/../temp/' + articleId + '.png')
-  var location = '/Users/smcavinney/Documents/My Documents/wefeed/server/temp/' + articleId + '.png'
+  console.log(base + '/temp/' + articleId + '.png');
+  var location = base + '/temp/' + articleId + '.png'
   var destination = "/thumbs/" + articleId + ".png";
   download(uri, location, function(){
     client.upload(location, destination, function(err) {

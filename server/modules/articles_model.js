@@ -1,8 +1,6 @@
 
 var pg = require('pg'),
     Q = require('q');
-    pg = require('pg'),
-    Q = require('q'),
     thumbd = require('./thumbnailer.js');
 
 pg.defaults.poolIdleTimeout = 12000000;
@@ -37,7 +35,7 @@ exports.addArticle = function(article, user){
 
 resizeImages = function(url, articleId){
   return Q.Promise(function(resolve) {
-    console.log(url, articleId);
+    //console.log(url, articleId);
     thumbd.thumbd(url, articleId);
     pg.connect(conString, function(err, client, donee) {
       if(err) {

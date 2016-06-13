@@ -124,11 +124,12 @@ app.post('/api/user', function(req, res) {
   userModel.create_user(req.body)
   .then (function(row) {
     var user = {};
-    if (row.exists == false) {
-      user = {id:row[0]};
-      twitterStream.stream(user)
-    } else {
+    if (row.exists == true) {
       user = row;
+    } else {
+      user = {id:row[0]};
+      console.log(user);
+      twitterStream.stream(user)
     }
     res.json(user.id);
   });

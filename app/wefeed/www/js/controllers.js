@@ -5,6 +5,7 @@ angular.module('starter.controllers', [])
   $scope.logout = function() {
     console.log('log out');
     auth.signout();
+    $scope.profile = null;
     store.remove('profile');
     store.remove('token');
     $location.path('/login');
@@ -78,24 +79,17 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('StartCtrl', function($scope, $state, $stateParams, $http, $cordovaDevice) {
-  document.addEventListener("deviceready", function () {
+.controller('StartCtrl', function($ionicPlatform, $scope, $location, store, $state, $stateParams) {
+  ionic.Platform.ready(function(){
+    var userId = store.get('token')
+    //console.log(store.get('token'));
+    if (userId) {
+      $location.path('/app/posts');
+    } else {
+      $location.path('/login');
 
-    var device = $cordovaDevice.getDevice();
-
-    var cordova = $cordovaDevice.getCordova();
-
-    var model = $cordovaDevice.getModel();
-
-    var platform = $cordovaDevice.getPlatform();
-
-    var uuid = $cordovaDevice.getUUID();
-    //console.log('test');
-    console.log(uuid);
-    $scope.uuid = uuid;
-    var version = $cordovaDevice.getVersion();
-
-  }, false);
+    }
+  })
 })
 
 .filter('html', function($sce) {

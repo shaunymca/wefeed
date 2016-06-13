@@ -23,17 +23,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova','auth0',
     }
   });
 })
-.constant('api', '')
 //.constant('api', '')
+.constant('api', 'http://ec2-52-41-29-70.us-west-2.compute.amazonaws.com')
 .config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider,
   jwtInterceptorProvider) {
   $stateProvider
-    .state('login', { // Notice: this state name matches the loginState property value to set in authProvider.init({...}) below...
-      url: '/login',
-      templateUrl: 'templates/login.html',
-      controller: 'LoginCtrl',
-    })
-    .state('app', {
+  .state('login', { // Notice: this state name matches the loginState property value to set in authProvider.init({...}) below...
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl',
+  })
+  .state('start', {
+    url: '/start',
+    templateUrl: 'templates/start.html',
+    controller: 'StartCtrl'
+  })
+  .state('app', {
     url: '/app',
     abstract: false,
     templateUrl: 'templates/menu.html',
@@ -69,7 +74,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova','auth0',
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/start');
 
   authProvider.init({
     domain: 'wefeed.auth0.com',

@@ -154,7 +154,7 @@ if (env === 'production') {
  */
 
 app.get('/', function(req, res) {
-  res.sendfile(__dirname + "/public/js/partials/index.html");
+  res.send('Hello World');
 });
 /**
  * Start Server
